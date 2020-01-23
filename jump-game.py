@@ -14,3 +14,24 @@ class Solution:
       max_jump = max(max_jump, nums[curr] + curr)
     # return true or false if max_jump is greater than the last index of the list
     return max_jump >= len(nums) - 1
+
+  # 2nd attempt
+  class Solution:
+  def canJump(self, nums: List[int]) -> bool:
+    # initializee a variable to store the max jump
+    max_jump = 0
+
+    jump_from_pos = 0
+    # loop through the list
+    for i in range(len(nums)):  
+      # if the loop variable is ahead of max jump variable 
+      if i > max_jump:  
+        # return false
+        return False
+      # for each value: add the index
+      jump_from_pos = i + nums[i]
+      # calculate the max jump
+      max_jump = max(max_jump, jump_from_pos)
+      
+    # return true
+    return True
