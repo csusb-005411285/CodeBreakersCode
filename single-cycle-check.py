@@ -1,42 +1,41 @@
 def hasSingleCycle(array):
     # Write your code here.
-	if len(array) < 0:
-		return False
-	# init a var to store the number of elements visited
-	num_elements = 0
-	# init a var to store the current index
-	curr_index = 0
-	next_index = 0
-	# loop through the list
-	while num_elements < len(array): # O(n)
-		# if number of elements visited is less than thee end of the list
-		# and still the current index is 0 it means we have a cycle 
-		# before reaching the last element
-		if num_elements > 0 and curr_index == 0:
+	# Since the problem is about finding a cycle, it is most likely a DFS solution
+	# we need to check if all the indexes are visited and 
+	# we return back to the starting index
+	
+	# init a var to count the number of elements visited
+	num_ele_visited = 0
+	# init a var to store the last position
+	last_pos = 0
+	# loop through the array
+	# loop until the number of jumps is equal to the number of elements
+	# in the array
+	while num_ele_visited < len(array):
+		# what if there is a cycle before we reach the last element
+		if num_ele_visited > 0 and last_pos == 0:
+			# return false
 			return False
-		# increment the number of elements visited
-		num_elements += 1
-		# calculate the next index
-		curr_index = get_next_index(curr_index, array)
-	# return true if the current index is at 0
-	return curr_index
-
-def get_next_index(curr_index, array):
-	next_index = 0
-	# calculate the value of the current index
-	value = array[curr_index]
-	# next index would be the sum of current index and the value in  the 
-	# current idendex
-	# if the value is greater than the len of the array
-	# then compute the modfrom the length of the arrya
-	# and add it
-	next_index = (value + curr_index) + (value+curr_index)%len(array)
-	# if the current index is positive
-	if next_index > 0:
-		# then return the result
-		return next_index
-	# else
+		# calculate the next jump
+		last_pos = next_pos(array, last_pos)
+		num_ele_visited += 1
+	# return if last position is at 0
+	return last_pos == 0
+	
+# define a method to calculate the next position
+def next_pos(array, index):
+	# Three conditions exists:
+		# next jump is less than the last index of the array	
+		# next jump is greater than the last index of the array
+		# next jump is negative
+	# init a var to store the next position
+	# next pos is equal to current index + value in that index
+	next_pos = (index + array[index]) % len(array)
+	if next_pos >= 0:
+		return next_pos
 	else:
-		return len(array) + next_index 
-		# return the value from above plus the length of the array
-	pass
+		return next_pos + len(array)
+
+
+	
+	
