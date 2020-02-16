@@ -1,50 +1,64 @@
 class Solution:
+  # https://leetcode.com/problems/pacific-atlantic-water-flow/discuss/90739/Python-DFS-bests-85.-Tips-for-all-DFS-in-matrix-question.
+  def __init__(self):
+    self.rows = 0
+    self.cols = 0
+    self.matrix = [[]]
+    # init a list to store the list of directions 
+    self.directions = [(0, -1), (0, 1), (1, 0), (-1, 0)]
+  
   def pacificAtlantic(self, matrix: List[List[int]]) -> List[List[int]]:
-    # preflight
-    if not matrix: 
-      return []
-    # set the directions matrix
-    self.directions = [(1,0),(-1,0),(0,1),(0,-1)]
-    # init rows and columns
-    rows = len(matrix)
-    cols = len(matrix[0])
-    # init two boolean matrixes where each index indicates whether a 
-    # the ocean can be reached from that index or not
-    p_visited = [[False for _ in range(cols)] for _ in range(rows)]
-    a_visited = [[False for _ in range(cols)] for _ in range(rows)]
-    # init a var to store results
-    result = []
-        
-    for i in range(rows):
-      # p_visited[i][0] = True
-      # a_visited[i][n-1] = True
-      # check if the water can flow from left edge to the right or bottom edge
-      self.dfs(matrix, i, 0, p_visited, rows, cols)
-      # check if the water can flow from the right edge to the left or top edge
-      self.dfs(matrix, i, cols-1, a_visited, rows, cols)
+    self.matrix = matrix
+    # init a var to store the length of rows
+    self.rows = len(matrix)
+    # init a var to store the length of cols
+    self.col = len(matrix[0])
     
-    for j in range(cols):
-      # p_visited[0][j] = True
-      # a_visited[m-1][j] = True
-      # check if the water can flow from the top edge to the right or bottom edge
-      self.dfs(matrix, 0, j, p_visited, rows, cols)
-      # check if the water can flow from the bottom edge to the top edge or left edge
-      self.dfs(matrix, rows-1, j, a_visited, rows, cols)
-
-    for i in range(rows):
-      for j in range(cols):
-        # indicates the water can reach this index from Pacific ocean as well as Atlantic ocean
-        if p_visited[i][j] and a_visited[i][j]:
-          result.append([i,j])
-    return result
-                
-  def dfs(self, matrix, i, j, visited, rows, cols):
-    # when dfs called, meaning its caller already verified this point 
-    visited[i][j] = True
-    for dir in self.directions:
-      x, y = i + dir[0], j + dir[1]
-      # check whether the cell can "receive" the water; not "send" the water
-      if x < 0 or x >= rows or y < 0 or y >= cols or visited[x][y] or matrix[x][y] < matrix[i][j]:
-        continue
-      self.dfs(matrix, x, y, visited, rows, cols)
+    # init a boolean matrix to store value if a cell can move water to Pacific ocean
+    can_move_to_pac_ocean = [[False for _ in range(self.cols)] for _ in range(self.rows)]
+    # init a boolean matrix to store value if a cell can move water to Atlantic ocean
+    can_move_to_atl_ocean = [[False for _ in range(self.cols)] for _ in range(self.rows)]
+    
+    # init a list of grid coordinates
+    grid_coordinates = []
+    
+    # perform DFS from the left edge; check if water can move from Pacific ocean to Atlantic ocean
+    # mark cells in the can_move_to_pac_ocean to 1 if the water can flow into it
+    for i in range(self.col): # O(n)
+      self.dfs(i, 0, can_move_to_atl_ocean)
+    
+    # perform DFS from the top edge; check if water can move from Pacific ocean to Atlantic ocean
+    for i in range(self.col):
+      self.dfs(0, i, can_move_to_atl_ocean)
+    
+    # perform DFS from the right edge
+    for i in range(self.rows):
+      self.dfs(i, self.cols - 1, can_move_to_pac_ocean)
+    
+    # perform DFS from the bottom edge
+    for i in range(self.rows):
+      self.dfs(self.rows - 1, i, can_move_to_atl_ocean)
+    
+    # loop through both the matrix to check if the cells match
+    return []
+    
+    
+  # dfs method
+  def dfs(self, x, y, can_move_to_ocean):
+      print(x)
+      print(y)
+      print(can_move_to_ocean)
+      print(can_move_to_ocean[0])
+      # init a list to store the visited nodes
+      can_move_to_ocean[x][y] = True
+      # for the x and y value of the cell indices
+      for direction in self.directions:
+        neighbor_x, neighbor_y = x + direction[0], y + direction[1]
+        # check if it can accept value from the four neighbors
+        if x < 0 or x > self.rows or y < 0 or y > self.cols or can_move_to_ocean[x][y] or can_move_to_ocean[x][y] < can_move_to_ocean[neighbor_x][neighbor_y]:
+          continue
+        # recurse itself
+        self.dfs(x, y, can_move_to_ocean)
+      
+    
         
