@@ -46,3 +46,42 @@ class Solution:
     
     # return the total importance value
     return total_imp_value
+  
+  # 2nd attempt
+  def getImportance(self, employees: List['Employee'], id: int) -> int:
+    # if list of employees is 0
+    if len(employees) == 0:
+      # then return 0
+      return 0
+    
+    # init a queue
+    emp_queue = []
+    # init a var to store the total_importance
+    total_importance = 0
+    visited_emp = 0
+    # init a dict to store employee id and the object
+    emp_dict = {}
+    for employee in employees: # O(n)
+      emp_dict[employee.id] = employee
+      
+    # loop through the list
+    for employee in employees: # O(n)
+      # find the employee with the id
+      # if the employee id matches the given id
+      if employee.id == id:
+        # store it in a queue
+        emp_queue.append(employee) # O(n)
+        # perform bfs
+        # while queue is not empty
+        while emp_queue:
+          # pop the left element
+          visited_emp = emp_queue.pop(0)
+          # add it to the total_importance var
+          total_importance += visited_emp.importance
+          # loop through all the children
+          for subordinate in visited_emp.subordinates: # O(n)
+            # add them to the queue
+            emp_queue.append(emp_dict[subordinate])
+            
+    # return total importance
+    return total_importance
