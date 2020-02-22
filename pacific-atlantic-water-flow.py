@@ -26,11 +26,11 @@ class Solution:
         queue.append((i, 0))
     else:
       for j in range(len(matrix[0])):
-        queue.append((len(matrix)-1, j))
+        queue.append((len(matrix) - 1, j))
       
       # Initialize Queue to have all cells in the left column.
       for i in range(len(matrix)):
-        queue.append((i, len(matrix)-1)) 
+        queue.append((i, len(matrix[0]) - 1)) 
     
     while queue:
       x, y = queue.popleft()
@@ -46,6 +46,8 @@ class Solution:
       
     
   def pacificAtlantic(self, matrix: List[List[int]]) -> List[List[int]]:
+    if len(matrix) == 0:
+      return []
     can_visit_matrix = [[False for _ in range(len(matrix[0]))] for _ in range(len(matrix))]
     pacific_atlantic_cells = set();
     
