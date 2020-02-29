@@ -1,20 +1,28 @@
 def numberOfWaysToMakeChange(n, denoms):
-    # Write your code here.
-	# init a list to store the number of ways to make change
-	# init it to 1 and have n elements
-	num_ways_change = [1 for _ in range(n)]
-	# loop until the n
-	for amt in range(n):
-		# for every n calculate the number of ways you could make the change given the
-		# denominations
-		for den in denoms:
-			# if the number is less than the denomination 
-			if amt  < den:
-				# then there are 0 ways to make the change
-				num_ways_change[amt] += 0
-			# if the number is greater than the denomination
-    		else:
-				# then compute the sum from the index of that denomination and the index of the number - denomination
-				num_ways_change[amt] += num_ways_change[amt] + num_ways_change[den - amt]
-	# return the last index of the list
+    # Write your code.
+	if n == 0:
+		return 1
+		
+	if len(denoms) == 0:
+		return 0
+		
+	# init a list to store the num of ways to make change
+	# include n in the list
+	num_ways_change = [0 for _ in range(n + 1)]
+	
+	# init the 0th index to 1
+	# there is 1 way to make change for 0 amount
+	num_ways_change[0] = 1
+	# loop through the denoms
+	for deno in denoms:
+		# loop through the amount till n
+		for amt in range(1, n + 1):
+			# if deno > amt
+			if deno > amt:	
+				continue
+
+			# the no of ways is sum of value from current index and the 
+			# difference between the amount and deno
+			num_ways_change[amt] = num_ways_change[amt] + num_ways_change[amt - deno]			
+		# return the last index 
 	return num_ways_change[-1]
