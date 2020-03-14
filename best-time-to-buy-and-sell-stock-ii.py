@@ -17,3 +17,24 @@ class Solution:
       
     # return max
     return _max
+  
+  # 2nd attempt
+  def maxProfit(self, prices: List[int]) -> int:
+    # if there are no prices or only one price 
+    if len(prices) <= 1:
+      # then return 0
+      return 0
+    
+    # init a var to store the profits
+    profit = 0
+    # loop through the prices
+    # start on day 1
+    for i in range(1, len(prices)):  
+      # if the price on the current day is greater than the previous day
+      if prices[i] > prices[i - 1]:
+        # then calculate the profit
+        # also add the previous days profit
+        profit += prices[i] - prices[i - 1]
+    
+    # return the profit
+    return profit
