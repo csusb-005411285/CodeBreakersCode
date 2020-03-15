@@ -41,7 +41,7 @@ class Solution:
     if self.parents[vertex] == 0:
       # then return the vertex, which means the index
       return vertex
-    return self.find(self.parents[vertex])
+    return self.find_vertex_with_no_children(self.parents[vertex])
     
   
   def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
