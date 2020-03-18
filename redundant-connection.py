@@ -68,4 +68,40 @@ class Solution:
         return [x, y]
     return []
         
+   # 3rd attempt
+   def __init(self):
+    self.parents = []
+  
+  def find(self, vert: int) -> int:
+    # if the vertex is a root
+    if self.parents[vert] == 0:  
+      # return the index
+      return vert
+    # go to the parent index
+    return self.find(self.parents[vert])
+  
+  def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
+    # if the edges are less than 1
+    if len(edges) <= 1:
+      # then return an empty list
+      return []
+    
+    # init a list to store the parents
+    self.parents = [0 for _ in range(len(edges))]
+    # loop through each edge
+    for edge in edges:
+      x = edge[0] - 1
+      y = edge[1] - 1
+      # find the root of each vertex
+      x_root = self.find(x)
+      y_root = self.find(y)
+      
+      # if the vertices share the same root
+      if x_root == y_root:
+        # then return the vertices in a list
+        return [edge[0], edge[1]]
+      
+      # make the first vertex the parent of the second vertex
+      self.parents[x_root] = y_root    
+    return []
     
