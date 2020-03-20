@@ -27,3 +27,26 @@ class Solution:
       # for each candidate, reduce the target by the value of the candidate
       choices = curr_choices + [candidates[i]]
       self.dfs(candidates, target-candidates[i], i, choices)
+      
+  # 2nd attempt
+  def __init__(self):
+    self.results = [] # O(n)
+  
+  def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+    if len(candidates) == 0:
+      return []
+    
+    candidates.sort()
+    self.dfs(candidates, target, 0, [])
+    return self.results
+  
+  def dfs(self, candidates, target, index, choices):
+    if target == 0:
+      self.results.append(choices)
+      return 
+    
+    if target < 0:
+      return;
+    
+    for i in range(index, len(candidates)): # O(n)
+      self.dfs(candidates, target - candidates[i], i, choices + [candidates[i]]) #O(n)
