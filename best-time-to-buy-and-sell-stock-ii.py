@@ -38,3 +38,21 @@ class Solution:
     
     # return the profit
     return profit
+
+  # 3rd attempt
+  def maxProfit(self, prices: List[int]) -> int:
+    # if prices is less than 1
+    if len(prices) <= 1:
+      # then return 0 
+      return 0
+      
+    # init a var to store the result
+    profit = 0
+    # loop through the prices
+    for i in range(1, len(prices)):
+      # if the current price is greater than yesterday's price
+      if prices[i - 1] < prices[i]:
+        # then compute the profit
+        profit += prices[i] - prices[i - 1]  
+    # return the profit
+    return profit
