@@ -25,7 +25,32 @@ class Solution:
     
     # return empty list
     return []
+ 
+  # 2nd attemp, two pointers
+  def twoSum(self, numbers: List[int], target: int) -> List[int]:     
+    # if the list has less than one element
+    if len(numbers) <= 1:
+      # return an empty list
+      return []
       
+    # init two pointers
+    start = 0 # O(1
+    end = len(numbers) - 1 # O(1)
+    
+    # loop through the list
+    while(start < end): # O(n)
+      if numbers[start] + numbers[end] < target:
+        start += 1
+      elif numbers[start] + numbers[end] > target:
+        end -= 1
+      else:
+        # if the numbers add up to the target
+          # return the index
+        return [start + 1, end + 1]
+      
+    # return empty list
+    return []  
+        
       
       
         
