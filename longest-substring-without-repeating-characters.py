@@ -30,5 +30,42 @@ class Solution:
         chars.append(s[end_window])
     # return the max value
     return _max
+  
+  # 2nd attempt
+  def lengthOfLongestSubstring(self, s: str) -> int:
+    if len(s) == 0:
+      return 0
+    
+    if len(s) == 1:
+      return 1
+    
+    # init two pointers
+    start = 0
+    end = 0
+    # init a list to store unique chars
+    unique_substr = [] # O(n)
+    # init a var to store max length
+    max_len = 0
+    # loop through the string
+    while end < len(s): # O(n2)
+      # if char not in unique subsrting
+      if s[end] not in unique_substr:
+        # add to unique substring
+        unique_substr.append(s[end])
+        # increment the first pointer
+        end += 1
+      # else
+      else:
+        # calculate the max length so far
+        # max length is the comparison of exisiting max length vs. length of unique substring
+        max_len = max(max_len, len(unique_substr))
+        start += 1
+        # set the end pointer to the position of the start pointer
+        end = start
+        # reset the unique substring list
+        unique_substr = []
+      
+    # return the max length     
+    return max(max_len, len(unique_substr))
       
         
