@@ -67,5 +67,43 @@ class Solution:
       
     # return the max length     
     return max(max_len, len(unique_substr))
+  
+  # 3rd attempt. One pointer
+  def lengthOfLongestSubstring(self, s: str) -> int:
+    # if length of string is 0
+    if len(s) == 0:
+      # return 0
+      return 0
       
-        
+    # if length of string is 1
+    if len(s) == 1:
+      # then return 1
+      return 1
+    
+    # init a pointer
+    ptr = 0 # O(1)
+    # init a list to store substring
+    substr = [] # O(n)
+    # init a var to store the max length
+    max_len = 0 # O(1)
+    # loop through the string
+    while ptr < len(s): # O(n)
+      # if char not in substring
+      if s[ptr] not in substr:
+        # insert in substring
+        substr.append(s[ptr])
+        max_len = max(max_len, len(substr))
+      # else
+      else:
+        # set the max length val
+        max_len = max(max_len, len(substr))
+        # empty visited
+        substr = substr[substr.index(s[ptr]) + 1:]
+        # add to visited
+        substr.append(s[ptr])
+      # increment pointer
+      ptr += 1
+
+    # return max length
+    return max_len
+  
