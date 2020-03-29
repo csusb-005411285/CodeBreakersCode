@@ -56,3 +56,30 @@ class Solution:
         profit += prices[i] - prices[i - 1]  
     # return the profit
     return profit
+  
+  # 4th attempt
+  def maxProfit(self, prices: List[int]) -> int:
+    if len(prices) <= 1:
+      return 0
+    
+    # init a var to store the profits
+    max_profit = 0 # O(1)
+    # init two pointers
+    buy = 0 # O(1)
+    sell = 1 # O(1)
+    
+    # loop through the prices
+    for sell in range(1, len(prices)): # O(n)
+      # if sell price is less than or equal to the buy price
+      if prices[sell] <= prices[buy]:
+        # set buy pointer to sell pointer
+        buy = sell
+      # else
+      else:  
+        # calculate the max profit
+        max_profit += prices[sell] - prices[buy]
+        # set the buy pointer to sell pointer
+        buy = sell
+    
+    # return the max profit
+    return max_profit
