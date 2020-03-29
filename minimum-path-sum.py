@@ -93,5 +93,32 @@ class Solution:
       
     # return the last cell
     return min_sum[-1][-1]
-      
+  
+  # 4th attempt 
+  def minPathSum(self, grid: List[List[int]]) -> int:
+    if len(grid) == 0:
+      return 0
     
+    if len(grid) == 1 and len(grid[0]) == 1:
+      return grid[0][0]
+    
+    min_path_grid = [[0 for _ in range(len(grid[0]))] for _ in range(len(grid))] # O(n)
+    
+    min_path_grid[0][0] = grid[0][0]
+    
+    for row in range(len(grid)): # O(n)
+      for col in range(len(grid[0])): # O(n)
+        
+        if row == 0 and col == 0:
+          continue
+        
+        if row == 0:
+          min_path_grid[0][col] = min_path_grid[0][col - 1] + grid[0][col]
+          
+        elif col == 0:
+          min_path_grid[row][0] = min_path_grid[row - 1][0] + grid[row][0]
+          
+        else:
+          min_path_grid[row][col] = min(min_path_grid[row - 1][col], min_path_grid[row][col - 1]) + grid[row][col]
+    
+    return min_path_grid[-1][-1]
