@@ -107,3 +107,34 @@ class Solution:
     # return max length
     return max_len
   
+  # O(1) space O(n) time
+  def lengthOfLongestSubstring(self, s: str) -> int:
+    if len(s) == 0:
+      return 0
+    
+    if len(s) == 1:
+      return 1
+    
+    # init two pointers
+    start = 0 # O(1)
+    end = 0 # O(1)
+    # init a var to store the result
+    max_len = 0 # O(1)
+    
+    # loop through the string
+    # start from the first position
+    for end in range(1, len(s)): # O(n)  
+      # if the char is in substring between the start and end index
+      if s[end] in s[start:end]:
+        # then calculate the result
+        max_len = max(max_len, end - start) #
+        index = s[start:end].index(s[end]) + len(s[:start])# 
+        # set the start pointer
+        start = index + 1
+
+    # check for a string with no repeating characters
+    # if the unique substring is towards the end
+    max_len = max(max_len, len(s[start:end + 1]))
+    
+    # return the result
+    return max_len
