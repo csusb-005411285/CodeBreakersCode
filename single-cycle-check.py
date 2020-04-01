@@ -36,6 +36,39 @@ def next_pos(array, index):
 	else:
 		return next_pos + len(array)
 
-
+# 2nd attempt
+def hasSingleCycle(array):
+    # Write your code here.
+	# init two pointers
+	fast = 0
+	slow = 0
+	# init a set to store the indices
+	visited = set() # O(n)
 	
+	# loop through the list
+	while slow < len(array): # O(n)
+		# calculate the index
+		next_index = array[fast] + fast
+		# if the value does not exist in the set
+		if fast not in visited:
+			if array[fast] >= 0:
+				if next_index >= len(array):
+					next_index = next_index % len(array)
+			else:
+				if next_index < 0:	
+					# if sum of value and index is greater than length of list
+					if -next_index >= len(array):
+						# then calculate mod
+						next_index = (next_index % len(array))
+					else:
+						next_index = next_index + len(array)
+			visited.add(fast)			
+		else:
+			return False
+		# move the fast pointer by that value
+		fast = next_index		
+		# increment the slow pointer
+		slow += 1
 	
+	# compare the length of visited with the length of input array
+	return len(visited) == len(array) and fast == 0
