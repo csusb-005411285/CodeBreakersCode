@@ -138,3 +138,35 @@ class Solution:
     
     # return the result
     return max_len
+  
+  # 5th attempt. O(n) time and O(1) space
+  def lengthOfLongestSubstring(self, s: str) -> int:
+    if len(s) == 0:
+      return 0
+    
+    if len(s) == 1:
+      return 1
+    # init two pointer
+    start = 0 # O(1)
+    end = 0 # O(1)
+    # init a var to store the max length of substring
+    max_substring = float("-inf") # O(1)
+    
+    # loop through the string
+    while end < len(s): # O(n)
+      # if current char is present in the string until now
+      if s.find(s[end], start, end) != -1:
+        # get the first index of the character
+        index = s.find(s[end], start, end)
+        # calculate the max length
+        max_substring = max(max_substring, end - start)
+        # increment the start pointer by 1
+        start = index + 1
+        
+      # increment the end pointer
+      end += 1
+    
+    # calculate the max among the max length and the length of substring
+    max_substring = max(max_substring, len(s[start:end]))
+    
+    return max_substring
