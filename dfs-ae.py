@@ -15,7 +15,7 @@ class Node:
         # Write your code here.
         return self.dfs_helper(array, self, []) # O(v+e)
 	
-	def dfs_helper(self, array, vertex, visited = []):
+    def dfs_helper(self, array, vertex, visited = []):
 		# if the vertex has no children
 		if not vertex.children:	
 			# add it to path
@@ -39,3 +39,18 @@ class Node:
 	
 		# return path
 		return array
+    
+    # 2nd attempt
+    def depthFirstSearch(self, array):
+        return self.dfs(array, self)
+	
+    def dfs(self, array, vertex):
+	if vertex.name in array:
+		return
+		
+	array.append(vertex.name) # O(n)
+		
+	for children in vertex.children: # O(n)
+		self.dfs(array, children) # O(n)
+		
+	return array
