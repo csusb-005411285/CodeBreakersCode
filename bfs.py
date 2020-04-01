@@ -30,3 +30,29 @@ class Node:
 		# return the array
 		return array
         pass
+	
+    # 2nd attempt
+    def breadthFirstSearch(self, array):
+        # Write your code here.
+		# init a deck
+		queue = deque() # n
+		# insert the current node in the deck
+		queue.append(self)
+		# loop through the deck
+		while queue: # n
+			# pop the node from the deck
+			curr_node = queue.popleft()
+			# if the node is in array
+			if curr_node.name in array:
+				continue
+				# continue
+				
+			# insert the value in the array
+			array.append(curr_node.name)
+			# loop through the children
+			for children in curr_node.children:
+				# insert them in the deck
+				queue.append(children)
+				
+		# return the deck
+		return array 
