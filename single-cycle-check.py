@@ -72,3 +72,50 @@ def hasSingleCycle(array):
 	
 	# compare the length of visited with the length of input array
 	return len(visited) == len(array) and fast == 0
+
+# 3rd attempt
+def hasSingleCycle(array):
+    # Write your code here.
+	# if array has no elements
+		# return false
+	if len(array) == 0:
+		return False
+		
+	# if array has one element
+	if len(array) == 1:
+		# return true
+		return True
+	
+	# init a var to store the next index
+	start = 0 #1
+	end = 0 #1
+	# init a binary list
+	visited = [] #n
+	
+	while start < len(array): #n
+		next_index = array[end] + end
+		if next_index >= len(array):
+			remainder = next_index % len(array)
+			next_index = remainder
+		else:
+			if next_index < 0:
+				if -next_index < len(array):
+					next_index = len(array) + next_index
+				if -next_index >= len(array):
+					remainder = -next_index % len(array)
+					if remainder != 0:
+						next_index = len(array) - remainder
+					else:
+					 	next_index = 0
+					
+		if end in visited:
+			return False
+		
+		visited.append(end)
+		end = next_index
+		start += 1
+		
+	return end == 0 and len(visited) == len(array)
+		
+			
+		
