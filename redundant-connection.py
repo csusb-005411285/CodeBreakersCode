@@ -142,3 +142,29 @@ class Solution:
       self.parents[root_x] = root_y  
         
     
+  # 5th attempt
+  def __init__(self):
+    self.parents = []
+  
+  def find_parent(self, vert)-> int:
+    if self.parents[vert] == 0:
+      return vert
+    return self.find_parent(self.parents[vert]) 
+  
+  def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
+    self.parents = [0 for _ in range(len(edges))] #n
+    
+    # loop through the edges
+    for x, y in edges: #n 
+      # for each vertex find the parent
+      x_parent = self.find_parent(x - 1)
+      y_parent = self.find_parent(y - 1)
+      # if they do not have a common parent
+      if x_parent != y_parent:
+        # then make the first vertex the parent of the second
+        self.parents[x_parent] = y_parent
+      else:
+        # they are conncected
+        # return the edge
+        return [x, y]
+      
