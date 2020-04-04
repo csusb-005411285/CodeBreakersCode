@@ -83,3 +83,29 @@ class Solution:
     vert.left = None 
 
     return vert
+  
+  # 3rd attempt
+  def dfs(self, vert: TreeNode) -> None:
+    if not vert.left and not vert.right:
+      return vert
+    
+    left_child = None
+    right_child = None
+    
+    if vert.left:
+      left_child = self.dfs(vert.left)
+    if vert.right:
+      right_child = self.dfs(vert.right)
+   
+    last_left_child = left_child
+    while last_left_child and last_left_child.right: #n
+      last_left_child = last_left_child.right
+    
+    if left_child:
+      vert.right = left_child
+      last_left_child.right = right_child 
+    else:
+      vert.right = right_child
+      
+    vert.left = None
+    return vert
