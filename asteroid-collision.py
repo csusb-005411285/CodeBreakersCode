@@ -28,3 +28,40 @@ class Solution:
         stack.append(ast)
     
     return stack
+  
+  # 2nd attempt
+  def asteroidCollision(self, asteroids: List[int]) -> List[int]:
+    if len(asteroids) == 0:
+      return []
+    
+    if len(asteroids) == 1:
+      return asteroids
+    
+    stack = deque() #n
+    stack.append(asteroids[0])
+    
+    for ast in asteroids[1:]: #n
+      if stack and stack[-1] > 0:
+        if ast > 0:
+          stack.append(ast)
+        else:
+          if -ast < stack[-1]:
+            continue
+          if -ast == stack[-1]:
+            stack.pop()
+            continue
+          while stack and -ast > stack[-1] and stack[-1] > 0: #n
+            stack.pop()
+          else:
+            if stack and -ast == stack[-1]:
+              stack.pop()
+              continue
+            if len(stack) == 0:
+              stack.append(ast)
+            else:
+              if stack[-1] < 0:
+                stack.append(ast)
+      else:
+        stack.append(ast)
+        
+    return stack
