@@ -27,3 +27,27 @@ class Solution:
       head = next_head.next
       
     return root
+
+  # 5th attempt
+  def connect(self, root: 'Node') -> 'Node':
+    if not root:
+      return None
+    
+    if not root.left and not root.right:
+      return root
+    
+    slow = root
+    while slow: #n
+      fast = slow
+      head = tail = Node('0') #1
+      while fast: #n
+        if fast.left:
+          tail.next = fast.left
+          tail = tail.next 
+        if fast.right:
+          tail.next = fast.right
+          tail = tail.next 
+        fast = fast.next
+      slow = head.next
+    
+    return root
