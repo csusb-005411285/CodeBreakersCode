@@ -170,3 +170,38 @@ class Solution:
     max_substring = max(max_substring, len(s[start:end]))
     
     return max_substring
+  
+  # 6th attempt
+  def lengthOfLongestSubstring(self, s: str) -> int:
+    if len(s) == 0:
+      return 0
+    
+    if len(s) == 1:
+      return 1
+    
+    # init two pointers
+    start = 0 #1
+    end = 0 #1
+    # init a var to store the length
+    max_len = 1 #1
+    
+    # loop through the string
+    for end in range(1, len(s)): #1
+      # check if any character before the end pointer matches the char at end pointer
+      if s[end] in s[start:end]:
+        # then calculate the length
+        length = len(s[start:end]) 
+        # calculate the max length so far
+        max_len = max(max_len, length)
+        # set the start pointer to the next index of matched char
+        start =  s.index(s[end], start) + 1 
+      else:
+        # increment the end pointer
+        end += 1  
+        # increment the max length
+        
+      max_len = max(max_len, len(s[start:end]))
+      
+    # return the max length
+    return max_len   
+     
