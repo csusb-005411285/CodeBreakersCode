@@ -50,3 +50,53 @@ def get_descendent_on_lower_depth(descendent, diff):
         descendent = descendent.ancestor
         diff -= 1
     return descendent
+
+# 2nd attempt
+def getYoungestCommonAncestor(topAncestor, descendantOne, descendantTwo):
+    # Write your code here.	
+	depth_one = get_depth(descendantOne)
+	depth_two = get_depth(descendantTwo)
+	desc_higher_depth = None
+	desc_lower_depth = None
+	descendent_on_same_level = None
+	# compare the depths
+	# store the descendent that has the higher depth
+	if depth_one > depth_two:
+		diff = depth_one - depth_two
+		desc_higher_depth = descendantOne
+		desc_lower_depth = descendantTwo
+		# from the descendent of having higher depth, get the descendent which is on the same level as the other descendent
+		descendent_on_same_level = get_descendent_on_same_level(desc_higher_depth, diff)
+	else:
+		diff = depth_two - depth_one	
+		desc_higher_depth = descendantTwo
+		desc_lower_depth = descendantOne
+		# from the descendent of having higher depth, get the descendent which is on the same level as the other descendent
+		descendent_on_same_level = get_descendent_on_same_level(desc_higher_depth, diff)
+	# now since both the descendents are on the same level
+	common_ancestor = find_common_ancestor(desc_lower_depth, descendent_on_same_level)
+	# return the common ancestor
+	return common_ancestor
+
+def get_depth(descendent):
+	# keep looping until you reach the top node
+	depth = 0
+	while descendent.ancestor:
+		descendent = descendent.ancestor
+		depth += 1
+	return depth
+
+def get_descendent_on_same_level(desc_higher, depth):
+	desc = desc_higher
+	while depth != 0:
+		desc = desc.ancestor
+		depth -= 1
+	return desc
+
+def find_common_ancestor(desc_left, desc_right):
+	# traverse until you find a common ancestor
+	while desc_left is not desc_right and desc_left and desc_right:
+		desc_left = desc_left.ancestor
+		desc_right = desc_right.ancestor
+	return desc_left
+   
