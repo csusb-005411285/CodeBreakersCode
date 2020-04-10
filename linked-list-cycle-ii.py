@@ -89,4 +89,42 @@ class Solution:
         mid = mid.next
       
       return mid
-        
+
+# 3rd attempt
+class Solution:
+  def __init__(self):
+    self.vert_in_cycle = None #n
+  
+  def detectCycle(self, head: ListNode) -> ListNode:
+    # init two pointers
+    start = head 
+    # detect if a linked list has a cycle
+    if self.has_cycle(head): 
+      # loop until they are not equal
+      mid = self.vert_in_cycle 
+      
+      while start is not mid: 
+        # increment both the pointers by 1
+        start = start.next
+        mid = mid.next
+      # then return the first node
+      return start
+      
+    return None
+  
+  def has_cycle(self, vert):
+    # init two pointers
+    slow = vert #1
+    fast = vert #1
+    # loop until they are not at the same spot
+    while slow is not None and fast is not None and fast.next is not None: #n
+      # loop the first pointer by 1
+      slow = slow.next
+      # loop the second pointer by 2
+      fast = fast.next.next
+      
+      if slow is fast:
+        self.vert_in_cycle = slow
+        return True
+      
+    return False
