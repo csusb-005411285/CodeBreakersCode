@@ -65,3 +65,63 @@ def riverSizes(matrix):
 		
 	# return the list
 	return river_sizes		
+
+# 2nd attempt
+def riverSizes(matrix):
+    # Write your code here.
+    # init a matrix to store the visited vertices
+    visited = [[False for col in rows] for rows in matrix]  # n
+    # init a list to store the river sizes
+    river_sizes = []  # n
+    # init a deck
+    stack = deque()  # n
+
+    # loop through the matrix
+    for row in range(len(matrix)):  # n
+        for col in range(len(matrix[0])):  # n
+            # init a var to store river sizes
+            river_size = 0
+            stack.append([row, col])
+            # loop through the stack
+            while stack:  # n
+                # pop the element from the stack
+                x, y = stack.pop()
+
+                # if the element is visited
+                if visited[x][y]:
+                    continue
+
+                # mark the element as visited
+                visited[x][y] = True
+
+                # if vert is 0 continue
+                if matrix[x][y] == 0:
+                    continue
+
+                # then increment the river size
+                river_size += 1
+
+                # get the neighbors
+                neighbors = get_neighbors(matrix, x, y)
+                # insert the neighbors in the stack
+                for neighbor in neighbors:
+                    stack.append(neighbor)
+
+                    if river_size > 0:
+                        # add the river size to the list
+                river_sizes.append(river_size)
+
+    return river_sizes
+
+
+def get_neighbors(matrix, x, y):
+    neighbors = []
+    if x > 0:
+        neighbors.append([x - 1, y])
+    if y > 0:
+        neighbors.append([x, y - 1])
+    if x < len(matrix) - 1:
+        neighbors.append([x + 1, y])
+    if y < len(matrix[0]) - 1:
+        neighbors.append([x, y + 1])
+    return neighbors
