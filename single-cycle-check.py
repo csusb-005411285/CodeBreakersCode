@@ -83,7 +83,6 @@ def hasSingleCycle(array):
 
 	start = 0 #1
 	end = 0 #1
-	# init a binary list
 	visited = [] #n
 	
 	while start < len(array): #n
