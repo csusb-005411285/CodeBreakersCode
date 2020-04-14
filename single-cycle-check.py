@@ -75,18 +75,12 @@ def hasSingleCycle(array):
 
 # 3rd attempt
 def hasSingleCycle(array):
-    # Write your code here.
-	# if array has no elements
-		# return false
 	if len(array) == 0:
 		return False
 		
-	# if array has one element
 	if len(array) == 1:
-		# return true
 		return True
-	
-	# init a var to store the next index
+
 	start = 0 #1
 	end = 0 #1
 	# init a binary list
@@ -116,6 +110,7 @@ def hasSingleCycle(array):
 		start += 1
 		
 	return end == 0 and len(visited) == len(array)
+
 		
 			
 		
