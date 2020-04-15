@@ -205,3 +205,25 @@ class Solution:
     # return the max length
     return max_len   
      
+# 7th attempt
+  def lengthOfLongestSubstring(self, s: str) -> int:
+    start = 0
+    end = 1
+    
+    substr_len = float('-inf')
+    
+    while end < len(s):
+      if s[end] in s[start:end]:
+        substr_len = max(substr_len, len(s[start:end]))
+        start = s.index(s[end], start, end) + 1
+      elif end == len(s) - 1:
+          substr_len = max(substr_len, len(s[start:]))
+          end += 1
+      else:
+        end += 1
+    
+    if substr_len == float('-inf'):
+      return len(s)
+    
+    return substr_len
+        
