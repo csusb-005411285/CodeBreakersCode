@@ -125,3 +125,48 @@ def get_neighbors(matrix, x, y):
     if y < len(matrix[0]) - 1:
         neighbors.append([x, y + 1])
     return neighbors
+
+	# 3rd attempt. Recursive solution
+def riverSizes(matrix):
+  # Write your code here.
+  visited = [[False for col in range(len(matrix[row]))] for row in range(len(matrix))]
+
+  river_sizes = []
+
+  for row in range(len(matrix)):
+    curr_river_size = 0
+    for col in range(len(matrix[row])):
+      curr_river_size = dfs(matrix, [row, col], visited, 0)
+      if curr_river_size: #
+        river_sizes.append(curr_river_size) 
+  return river_sizes
+
+def dfs(matrix, vertex, visited, curr_river_size = 0):
+  x, y = vertex
+  if visited[x][y]:
+    return 0;
+  
+  if matrix[x][y] != 1:
+    return 0;
+
+  visited[x][y] = True
+  curr_river_size += 1
+
+  for neighbor in get_neighbors(matrix, vertex):
+    neigh_river_size = 0
+    x_neigh, y_neigh = neighbor
+    curr_river_size += dfs(matrix, [x_neigh, y_neigh], visited, 0)
+  return curr_river_size
+
+def get_neighbors(matrix, vertex):
+  x, y = vertex
+  neighbors = []
+  if x > 0: # left
+    neighbors.append([x - 1, y])
+  if y > 0: # top
+    neighbors.append([x, y - 1])
+  if x < len(matrix) - 1: # right
+    neighbors.append([x + 1, y])
+  if y < len(matrix[x]) - 1: # bottom
+    neighbors.append([x, y + 1])
+  return neighbors
