@@ -23,3 +23,27 @@ class Solution:
         stack.append(ast)
         
     return stack 
+  
+  # 5th attempt
+  def asteroidCollision(self, asteroids: [int]) -> [int]:
+    stack = deque()
+
+    for ast in asteroids:
+      if stack and stack[-1] > 0 and ast < 0:
+        while stack and stack[-1] > 0 and -ast > stack[-1]:
+          stack.pop()
+          
+        if not stack:
+          stack.append(ast)
+          continue
+          
+        if -ast == stack[-1]:
+          stack.pop()
+          continue
+          
+        if -ast > stack[-1]:
+          stack.append(ast)
+      else:
+        stack.append(ast)
+    
+    return list(stack)
