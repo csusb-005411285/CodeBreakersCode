@@ -158,6 +158,24 @@ def dfs(matrix, vertex, visited, curr_river_size = 0):
     curr_river_size += dfs(matrix, [x_neigh, y_neigh], visited, 0)
   return curr_river_size
 
+# alternate way to increment a counter
+def dfs(matrix, vertex, visited, curr_river_size = 0):
+  x, y = vertex
+  if visited[x][y]:
+    return curr_river_size
+  
+  if matrix[x][y] != 1:
+    return curr_river_size
+
+  visited[x][y] = True
+  curr_river_size += 1
+
+  for neighbor in get_neighbors(matrix, vertex):
+    neigh_river_size = 0
+    x_neigh, y_neigh = neighbor
+    curr_river_size = dfs(matrix, [x_neigh, y_neigh], visited, curr_river_size)
+  return curr_river_size
+
 def get_neighbors(matrix, vertex):
   x, y = vertex
   neighbors = []
