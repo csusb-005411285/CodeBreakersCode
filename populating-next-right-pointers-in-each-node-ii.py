@@ -51,3 +51,5 @@ class Solution:
         left_right = left_right.next
       top_down = holder.next
 		return root
+
+	
