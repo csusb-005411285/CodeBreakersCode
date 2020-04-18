@@ -109,3 +109,47 @@ class Solution:
       
     vert.left = None
     return vert
+
+# 4th attempt
+def flatten(self, root: TreeNode) -> None:
+    """
+    Do not return anything, modify root in-place instead.
+    """
+    if not root:
+      return None
+      
+    if root.left is None and root.right is None:
+      return root 
+    
+    return self.traverse_tree(root) #n
+
+  def traverse_tree(self, root):
+    if root.left is None and root.right is None: 
+      return root
+    
+    left_child = None
+    right_child = None
+    last_right_node_left_child = None
+
+    if root.left:
+      left_child = self.traverse_tree(root.left) #n
+    
+    if root.right:
+      right_child = self.traverse_tree(root.right) #n
+    
+    if left_child:
+       last_right_node_left_child = left_child
+      while last_right_node_left_child.right is not None:
+        last_right_node_left_child = last_right_node_left_child.right
+    
+    if last_right_node_left_child:
+      last_right_node_left_child.right = right_child
+      last_right_node_left_child.left = None
+    
+    if left_child: 
+      root.right = left_child
+    else: 
+      root.right = right_child
+    
+    root.left = None
+    return root 
