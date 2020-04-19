@@ -140,10 +140,8 @@ class Solution:
     start = head
     node_in_cycle = None
     has_cycle, node_in_cycle = self.has_cycle(head)
-    # check if has cycle
+    
     if (has_cycle):
-      # get the first node of the cycle
-      # loop until both the pointers point to the same node
       while start is not node_in_cycle:
         node_in_cycle = node_in_cycle.next
         start = start.next
@@ -151,10 +149,8 @@ class Solution:
     return None
 
   def has_cycle(self, head):
-    # init two pointers
     slow = head
     fast = head
-    # loop until both pointers point to the same node
     while slow and fast and fast.next:
       slow = slow.next
       fast = fast.next.next
