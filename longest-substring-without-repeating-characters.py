@@ -226,4 +226,20 @@ class Solution:
       return len(s)
     
     return substr_len
-        
+  
+  # 8th attempt
+  def lengthOfLongestSubstring(self, s: str) -> int:
+    # is string has length 0
+    start = 0
+    end = 0
+    max_len = 0
+
+    while end < len(s):
+      if s.find(s[end], start, end) != -1:
+        max_len = max(max_len, len(s[start:end]))
+        start = s.find(s[end], start, end) + 1
+      end += 1
+      
+      max_len = max(max_len, len(s[start:end]))
+    
+    return max_len
