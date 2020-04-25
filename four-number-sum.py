@@ -17,3 +17,28 @@ def fourNumberSum(array, targetSum):
                 two_sum[sum_back].append([array[backward], array[mid]]) 
 
     return quads
+
+# tc: o(n2), sc: o(n2)
+def fourNumberSum(array, targetSum):
+    quads = []
+    hashmap = {}
+    forward = 0
+    backward = 0
+    for i in range(1, len(array) - 1):
+        forward = i + 1
+        backward = 0 
+        while forward < len(array):
+            diff = targetSum - (array[i] + array[forward])
+            if diff in hashmap:
+                for pair in hashmap[diff]:
+                    quads.append(pair + [array[i], array[forward]])
+            forward += 1
+
+        while backward <  i:
+            sum_num = array[backward] + array[i]
+            if sum_num not in hashmap:
+                hashmap[sum_num] = [[array[backward], array[i]]] 
+            else:
+                hashmap[sum_num].append([array[backward], array[i]]) 
+            backward += 1
+    return quads
