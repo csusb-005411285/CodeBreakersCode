@@ -39,3 +39,29 @@ def is_balanced_helper(node, depth = 0):
     else:
         # if the depths are same, return the depth
         return depth
+
+# iterative implementation
+# tc: o(n), sc: o(n)
+def is_balanced(tree_root):
+    stack = deque()
+    stack.append([tree_root, 0])
+    leaf_nodes = []
+    min_depth = float('inf') 
+    max_depth = float('-inf') 
+    while stack:
+        node, depth = stack.pop()
+        if not node.left and not node.right:
+            leaf_nodes.append([node, depth])
+        if node.right:
+            stack.append([node.right, depth + 1])
+        if node.left:
+            stack.append([node.left, depth + 1])
+
+    for leaf_node in leaf_nodes:
+        min_depth = min(min_depth, leaf_node[1]) 
+        max_depth = max(max_depth, leaf_node[1])
+
+    if max_depth - min_depth <= 1:
+        return True 
+    else:
+        return False
