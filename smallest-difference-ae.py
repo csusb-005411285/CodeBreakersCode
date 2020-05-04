@@ -24,26 +24,3 @@ def smallestDifference(arrayOne, arrayTwo):
             min_sum = curr_sum
             result = [one_val, two_val]
     return result
-
-# 2nd attempt
-# tc: o(nlogn), sc:o(1)
-def smallestDifference(arrayOne, arrayTwo):
-    first = 0 #1
-    sec = 0 #1
-    diff = float('inf') #1
-    result = [] #1
-    arrayOne.sort() #nlogn
-    arrayTwo.sort() #nlogn
-    while first < len(arrayOne) and sec < len(arrayTwo): #n
-        curr_diff = arrayOne[first] - arrayTwo[sec]
-        if abs(curr_diff) <= abs(diff):
-            diff = curr_diff
-            result = [arrayOne[first], arrayTwo[sec]]
-        if arrayOne[first] < arrayTwo[sec]:
-            first += 1
-        elif arrayTwo[sec] < arrayOne[first]:
-            sec += 1
-        else:
-            return [arrayOne[first], arrayTwo[sec]]
-
-    return result
