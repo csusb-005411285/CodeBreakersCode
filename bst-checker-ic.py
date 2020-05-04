@@ -37,3 +37,26 @@ def is_binary_search_tree(root):
             stack.append([element.right, element.value, max_val])
 
     return True
+
+# BFS
+def is_binary_search_tree(root):
+    if not root:
+        return False
+    
+    if not root.left and not root.right:
+        return True
+
+    queue = deque()
+    queue.append([root, float('-inf'), float('inf')])
+    while queue:
+        node, lb, ub = queue.popleft()
+        if node.value <= lb or node.value >= ub:
+            return False
+
+        if node.left:
+            queue.append([node.left, lb, node.value])
+
+        if node.right:
+            queue.append([node.right, node.value, ub])
+        
+    return True
