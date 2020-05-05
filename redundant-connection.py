@@ -167,4 +167,23 @@ class Solution:
         # they are conncected
         # return the edge
         return [x, y]
-      
+     
+    # 6th attempt
+    def find_parents(self, vertex, parents):
+        if parents[vertex] == 0:
+            return vertex
+
+        return self.find_parents(parents[vertex], parents)
+
+    def findRedundantConnection(self, edges: [[int]]) -> [int]:
+        parents = [0 for _ in range(len(edges) + 1)]
+        for edge in edges:
+            x, y = edge
+            parent_x = self.find_parents(x, parents)
+            parent_y = self.find_parents(y, parents)
+            if parent_x == parent_y:
+                return [x, y]
+            
+            parents[parent_x] = parent_y
+        
+        return [-1, -1]
