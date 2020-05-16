@@ -23,9 +23,6 @@ class Solution:
                 if (l1 + l2) % 2 == 0:
                     return (max(left_val_m1, left_val_m2) + min(val_m1, val_m2)) / 2
                 else:
-                    '''
-                    made a mistake here
-                    '''
                     return max(left_val_m1, left_val_m2) 
 
             elif left_val_m1 > val_m2:
