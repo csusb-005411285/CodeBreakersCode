@@ -1,0 +1,35 @@
+# tc: o(n2), sc: o(n)
+def longestPeak(array):
+    if len(array) < 3:
+        return 0
+
+    peaks = get_peaks(array)
+    path_to_from_peak = get_path_from_peak(array, peaks)
+
+    if not path_to_from_peak:
+        return 0
+        
+    max_len = float('-inf')
+
+    for i in path_to_from_peak:
+        max_len = max(max_len, len(path_to_from_peak[i]))
+
+    return max_len
+
+def get_path_from_peak(array, peaks):
+    path = {} 
+
+    for i in peaks:
+        forward = i + 1
+        backward = i - 1
+        path[i] = [array[backward], array[i], array[forward]]
+
+        while backward >= 0 and array[backward - 1] < array[backward]:
+            path[i].append(array[backward - 1]) #
+            backward -= 1
+
+        while forward < len(array) - 1 and array[forward + 1] < array[forward]:
+            path[i].append(array[forward + 1])
+            forward += 1
+
+    return path        
