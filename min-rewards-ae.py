@@ -1,38 +1,42 @@
-# tc: o(n2), sc: o(n)
 def minRewards(scores):
     if len(scores) == 1:
-        return 1 
+        return 1
 
-    if len(scores) == 2:
-        return 3
+    local_minima_index = find_local_minimas(scores)
+    scores = get_scores_from_minimas(scores, local_minima_index)
+    return sum(scores)
 
-    local_minimas = get_local_minima(scores)
-    results = get_scores(scores, local_minimas)
-    return sum(results)
+def get_scores_from_minimas(scores, index):
+    results = [0 for _ in range(len(scores))] 
 
-def get_local_minima(scores):
-    minimas = []
-    for i in range(len(scores) - 1):
-        if i == 0 and scores[i] < scores[i + 1]:
-            minimas.append(i)
-        elif i == len(scores) - 1 and scores[i] < scores[i - 1]:
-            minimas.append(i)
-        elif scores[i] < scores[i + 1] and scores[i] < scores[i - 1]:
-            minimas.append(i)
-    return minimas
+    for i in index:
+        forward = i
+        backward = i
+        results[i] = 1
 
-def get_scores(scores, minimas):
-    results = [1 for _ in range(len(scores))]
-    for j in minimas:
-        forward = j + 1
-        backward = j - 1
-        
-        while backward >= 0 and scores[backward] > scores[backward + 1]:
-            results[backward] = max(results[backward], results[backward + 1] + 1)
-            backward -= 1
-
-        while forward < len(scores) and scores[forward] > scores[forward - 1]:
-            results[forward] = results[forward - 1] + 1
-            forward += 1
+        while backward >= 0:
+            if scores[backward - 1] > scores[backward]:
+                results[backward - 1] = max(results[backward - 1], results[backward] + 1)
+                backward -= 1
+            else:
+                break
+          
+        while forward < len(scores) - 1 and i != len(scores) - 1:
+            if scores[forward + 1] > scores[forward]:
+                results[forward + 1] = max(results[forward + 1], results[forward] + 1) 
+                forward += 1
+            else:
+                break
     
-    return results 
+    return results
+
+def find_local_minimas(scores):
+    results = []
+    for i in range(len(scores)):
+        if i == 0 and scores[i] < scores[i + 1]:
+            results.append(i)
+        elif i == len(scores) - 1 and scores[i] < scores[i - 1]:
+            results.append(i)
+        elif scores[i] < scores[i - 1] and scores[i] < scores[i + 1]:
+            results.append(i)
+    return results
