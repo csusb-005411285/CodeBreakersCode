@@ -1,33 +1,53 @@
 # tc: o(n), sc: o(1)
 def subarraySort(array):
-  indices = [-1, -1] #1
-  smallest_element = float('inf') #1
-  largest_element = float('-inf') #1
+    out_of_order_elements = find_out_of_order_elements(array)
+    
+    if not out_of_order_elements:
+        return [-1, -1]
 
-  for i in range(len(array)): #n
-    if is_out_of_order(i, array):
-      smallest_element = min(smallest_element, array[i])
-      largest_element = max(largest_element, array[i])
+    max_element = max(out_of_order_elements)
+    min_element = min(out_of_order_elements)
 
-  if smallest_element == float('inf') or largest_element == float('-inf'):
-    return [-1, -1 ]
+    lowest_index = get_lowest_index(array, min_element)
+    largest_index = get_largest_index(array, max_element)
 
-  j = 0
-  while array[j] <= smallest_element: #n 
-    j += 1 
-  indices = [j]
+    return [lowest_index, largest_index]
 
-  k = len(array) - 1 
-  while largest_element <= array[k]: #n 
-    k -= 1
-  indices.append(k)
-  
-  return indices
+def get_largest_index(array, max_ele):
+    index = len(array) - 1 
+    i = len(array) - 1 
 
-def is_out_of_order(i, array):
-  if i == 0:
-    return array[i] > array[i + 1] #
-  if i == len(array) - 1:
-    return array[i] < array[i - 1] #
-  else:
-    return array[i - 1] > array[i] or array[i] > array[i + 1] 
+    while i >= 0:
+        if max_ele > array[i]:
+            return i
+
+        i -= 1
+    
+    return index 
+
+def get_lowest_index(array, min_ele):
+    index = 0 
+    i = 0
+
+    while i < len(array):
+        if min_ele < array[i]:
+            return i
+
+        i += 1
+    
+    return index
+
+def find_out_of_order_elements(array):
+    out_of_order = []
+
+    for i in range(len(array)):
+        if i == 0 and array[i] > array[i + 1]:
+            out_of_order.append(array[i])
+        elif i == len(array) - 1 and array[i] < array[i - 1]:
+            out_of_order.append(array[i])
+        elif i != 0 and i != len(array) - 1: 
+            if array[i] < array[i - 1] or array[i] > array[i + 1]:
+                out_of_order.append(array[i])
+
+    return out_of_order
+
