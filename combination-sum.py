@@ -1,56 +1,4 @@
 class Solution:
-  
-  def __init__(self):
-    # init a var to store the results
-    self.results = []
-  
-  def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
-    # call dfs using with the current index of 0, current choices as empty list
-    # result as empty list
-    self.dfs(candidates, target, 0, [])
-    return self.results
-    
-  def dfs(self, candidates, target, curr_index, curr_choices=[]):
-    # check if the target is less than 0
-    if target < 0:
-      # backtrack
-      return
-    
-    # if the target is 0
-    if target == 0:
-      # then add it to the result
-      self.results.append(curr_choices)
-      return
-    
-    # loop through the candidates 
-    for i in range(curr_index, len(candidates)):
-      # for each candidate, reduce the target by the value of the candidate
-      choices = curr_choices + [candidates[i]]
-      self.dfs(candidates, target-candidates[i], i, choices)
-      
-  # 2nd attempt
-  def __init__(self):
-    self.results = [] # O(n)
-  
-  def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
-    if len(candidates) == 0:
-      return []
-    
-    candidates.sort()
-    self.dfs(candidates, target, 0, [])
-    return self.results
-  
-  def dfs(self, candidates, target, index, choices):
-    if target == 0:
-      self.results.append(choices)
-      return 
-    
-    if target < 0:
-      return;
-    
-    for i in range(index, len(candidates)): # O(n)
-      self.dfs(candidates, target - candidates[i], i, choices + [candidates[i]]) #O(n)
-  
   # 3rd attempt
   def __init__(self):
     self.unique_combinations = []
@@ -59,6 +7,7 @@ class Solution:
     if target == 0 or len(candidates) == 0:
       return []
     
+    candidates.sort()
     self.dfs(candidates, target)
     return self.unique_combinations
   
@@ -72,3 +21,23 @@ class Solution:
     
     for i in range(next_index, len(candidates)):
       self.dfs(candidates, target - candidates[i], i, choices + [candidates[i]])
+      
+# 4th attempt
+    def combinationSum(self, candidates: [int], target: int) -> [[int]]:
+        unique_combinations = []
+        self.combination_sum_helper(candidates, 0, target, [], unique_combinations)
+        return unique_combinations
+    
+    def combination_sum_helper(self, candidates, start, target, curr_selection = [], unique_combinations = []):
+        pprint.pprint(unique_combinations)
+        if sum(curr_selection) > target:
+            return
+        
+        if sum(curr_selection) == target:
+            unique_combinations.append(curr_selection)
+            return
+
+        for i in range(start, len(candidates)):
+            self.combination_sum_helper(candidates, i, target, curr_selection + [candidates[i]], unique_combinations)
+
+        return
