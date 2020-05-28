@@ -1,30 +1,26 @@
 # tc: o(n), sc: o(n)
 def find_second_largest(root_node):
-    stack = deque()
-    stack.append(root_node)
-    if root_node is None:
-       raise 'Not a valid node' 
-    
     if not root_node.left and not root_node.right:
-       raise 'Not a valid node' 
+        raise Exception('Cannot find 2nd largest element')
 
-    if root_node.right is None and root_node.left is not None:
-        return root_node.left.value
-    while stack:
-        node = stack.pop()
-        if node.right is not None and node.right.right is None and node.right.left is None:
-            return node.value
-        
-        if node.right is None and node.left is not None:
-            curr_node = node.left
-            while curr_node.right:
-                curr_node = curr_node.right
-            return curr_node.value
+    curr_node = root_node
+    parent_node = root_node
 
+    while curr_node and curr_node.right:
+        parent_node = curr_node
+        curr_node = curr_node.right
 
-        if node.left:
-            stack.append(node.left)
-        if node.right:
-            stack.append(node.right)
+    if curr_node.left and not curr_node.right:
+        return get_largest_element(curr_node.left)
+    else:
+        return parent_node.value
 
-    pass
+    raise Exception('Cannot find 2nd largest element')
+
+def get_largest_element(node):
+    curr_node = node
+
+    while curr_node and curr_node.right:
+        curr_node = curr_node.right
+
+    return curr_node.value
