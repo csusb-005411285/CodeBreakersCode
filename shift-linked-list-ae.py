@@ -1,54 +1,57 @@
 # tc: o(n), sc: o(1)
 def shiftLinkedList(head, k):
-    if k == 0:
-        return head
+    len_linked_list = get_length_linked_list(head)
+    location_linked_list =  get_linked_list_position(len_linked_list, k)
+    tail, new_head = get_new_head_tail(head, location_linked_list, len_linked_list)
+    last_node = get_length_linked_last_node(head, len_linked_list)
 
-    start = head
-    end, length = get_last_node_linked_list(head)
+    last_node.next = head
+    tail.next = None
+    head = new_head 
 
-    if k == length:
-        return head
+    return head
 
-    kth_node = get_kth_node_linked_list(head, k, length)
-    head = rotate(start, end, kth_node) 
-    return head 
-
-def rotate(start, end, kth_node):
-    end.next = start
-
-    if kth_node:
-        start = kth_node.next
-        kth_node.next = None
-        
-    return start
-
-def get_kth_node_linked_list(head, k, length):
-    if k < 0:
-        remainder = abs(k) % length
-
-        if remainder == 0:
-            remainder = length
-            
-        k_from_end = remainder
-    else:
-        remainder = k % length
-        k_from_end = length - remainder
-
-    i = 0
+def get_length_linked_last_node(head, len):
     curr_node = head
 
-    while i < k_from_end - 1 and curr_node:
+    while curr_node.next:
+        curr_node = curr_node.next
+    
+    return curr_node
+
+def get_new_head_tail(head, loc, len):
+    prev = None
+    curr_node = head
+    i = 0
+
+    while i < loc:
+        prev = curr_node
         curr_node = curr_node.next
         i += 1
 
-    return curr_node
+    if not prev:
+        prev = head
+        while prev and prev.next:
+            prev = prev.next
 
-def get_last_node_linked_list(head):
+    return [prev, curr_node]
+
+def get_linked_list_position(l, k):
+    position = 0
+
+    if k >= 0:
+        position = 0 if (k % l) == 0 else l - (k % l)
+    else:
+        position = 0 if (-k % l) == 0 else (-k % l)
+
+    return position
+
+def get_length_linked_list(head):
     curr_node = head
-    length = 1
-    
-    while curr_node.next:
+    counter = 0
+
+    while curr_node:
+        counter += 1
         curr_node = curr_node.next
-        length += 1
-    
-    return [curr_node, length]
+
+    return counter 
