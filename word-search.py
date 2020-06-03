@@ -1,50 +1,42 @@
 # tc: o(n), sc: o(n)
 class Solution:
     def exist(self, board: [[str]], word: str) -> bool:
-        if len(board) == 0 or len(word) == 0:
-            return False
-        
         visited = [[False for col in range(len(board[row]))] for row in range(len(board))]
-        found_word = False
+        word_exists = False
 
         for row in range(len(board)):
             for col in range(len(board[row])):
-                found_word = self.exist_helper(board, [row, col], visited, word, [board[row][col]])
-                if found_word:
+                word_exists = self.exist_helper(board, [row, col], visited, word, board[row][col])
+
+                if word_exists:
                     return True
 
-        return found_word
+        return word_exists
 
-    def exist_helper(self, board, vertex, visited, word, chars_so_far = []):
+    def exist_helper(self, board, vertex, visited, word, chars_so_far):
         x, y = vertex
-        char = ''.join(chars_so_far)
-        len_char = len(char)
-
+        
         if visited[x][y]:
             return False
 
-        if word[:len_char] != char:
+        if not word.startswith(chars_so_far):
             return False
+        
+        if chars_so_far == word:
+            return True
 
-        if len_char == len(word):
-            if char == word:
-                return True 
-            else:
-                return False
-
-
-        visited[x][y] = True 
+        visited[x][y] = True
         neighbors = self.get_neighbors(vertex, board)
-        word_found = False 
+        word_found = False
 
         for neighbor in neighbors:
-            neighbor_x, neighbor_y = neighbor
-            word_found = self.exist_helper(board, [neighbor_x, neighbor_y] , visited, word, chars_so_far + [board[neighbor_x][neighbor_y]])
-            
-            if word_found:
-                break
+            neigh_x, neigh_y = neighbor
+            word_found = self.exist_helper(board, [neigh_x, neigh_y], visited, word, chars_so_far + board[neigh_x][neigh_y])
 
-        visited[x][y] = False 
+            if word_found:
+                return True
+        
+        visited[x][y] = False
         return word_found
    
     def get_neighbors(self, vertex, board):
@@ -64,3 +56,4 @@ class Solution:
             neighbors.append([x, y + 1])
 
         return neighbors 
+
