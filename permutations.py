@@ -1,6 +1,21 @@
 class Solution:
     def permute(self, nums: [int]) -> [[int]]:
         permutations = []
+        self.permute_helper([], nums, permutations)
+        return permutations
+
+    def permute_helper(self, selection, choices, permutations):      
+        if selection and not choices:
+            permutations.append(selection)
+            return
+
+        for i in range(len(choices)):
+            self.permute_helper(selection + [choices[i]], choices[:i] + choices[i + 1:], permutations)
+        return
+
+class Solution:
+    def permute(self, nums: [int]) -> [[int]]:
+        permutations = []
         self.permutations_helper(nums, [], permutations)
         return permutations
 
