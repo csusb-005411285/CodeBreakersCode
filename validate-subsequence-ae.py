@@ -19,3 +19,18 @@ def isValidSubsequence(array, sequence):
             p1 += 1
 
     return (p2 == len(sequence)
+           
+# Single pointer solution
+# tc: o(n), sc: o(1)
+def isValidSubsequence(array, sequence):
+    ptr = 0
+
+    for i in range(len(sequence)):
+        num = sequence[i]
+        
+        if num in array[ptr:]:
+            ptr += array[ptr:].index(num) + 1
+        else:
+            return False
+
+    return True
