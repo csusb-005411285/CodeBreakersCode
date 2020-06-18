@@ -1,64 +1,54 @@
 class Solution:
-  def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
-    if len(wordList) == 0:
-      return 0
-    # init a new list
-    list_words = []
-    # init a list that will act as a Queue, the Queue will have the start word as the first element
-    queue = [beginWord]
-    # init a list to store all the alphabets
-    alphabets = [chr(i) for i in range(ord('a'),ord('z')+1)]
-    # init a var to store the transformations
-    transformations = 1
-    # loop through the word list
-    for char in wordList:
-      # insert the word in the list
-      list_words.append(char)
-    # if the list does not contains the end word
-    if endWord not in list_words:  
-      # then return 0
-      return 0
+    def ladderLength(self, beginWord: str, endWord: str, wordList: [str]) -> int:
+        if not beginWord or not endWord or not wordList:
+            return 0
 
-    # loop until the queue is not empty
-    while len(queue) != 0:
-      # init a var to store the size of the Queue
-      size = len(queue)
-      # loop through the Queue
-      for _ in range(0, size): #
-        # get the first element of the Queue
-        word = queue.pop(0) ##
-        # convert the string to a list of chars
-        list_chars = list(word) #
-        # loop through the chars
-        for index in range(len(list_chars)):
-          # loop through the alphabet list
-          for alphabet in alphabets:
-            # check if the char equals any char in the alphabet list
-            if list_chars[index] == alphabet:
-              # then continue
-              continue
-            # else if the char does not match the current char in the alphabet list
-            else:
-              # then replace the char in the word with the current char in the alphabet list
-              list_chars[index] = alphabet 
-              # create a new word from the replaced char **Key step**. This step can help us check by transforming one character can we reach the next word in the list
-              new_word = "".join(list_chars)
-              # if the new word matches the end word
-              if new_word == endWord:
-                # then increment the transformation var
-                transformations += 1
-                return transformations
-              # if the list contains the new word 
-              if new_word in list_words:
-                # then add it to the Queue
-                queue.append(new_word)
-                # remove it from the list because the transformation is already taken into account
-                list_words.remove(new_word)
-          # replace the replaced char with the original character; if this is not done then the character will have 'z' in it 
-          list_chars[index] = word[index] #
-        # increment the transformation var because the transformation was a success after changing one character
-        # the success is guranteed because each character in the word is transformed and checked
-      transformations += 1 #
-      
-    return 0 #
+        queue = deque()
+        visited = {}
+        words_map = self.generate_words_map(wordList) 
+        queue.append([beginWord, 1]) # 
+        visited[beginWord] = True
+    
+        while queue:
+            node, steps = queue.popleft() #
+            neighbors = self.get_neighbors(node)
+    
+            for neighbor in neighbors:
+                if neighbor in words_map:
+                    for word in words_map[neighbor]:
+                        if endWord == word:
+                            return steps + 1 
+
+                        if word not in visited:
+                            queue.append([word, steps + 1])
+                            visited[word] = True
+                else:
+                    words_map[neighbor] = []
         
+        return 0
+
+    def get_neighbors(self, word):
+        all_possible_words = []
+    
+        for i in range(len(word)):
+            new_word = word[:i] + '*' + word[i + 1:] 
+            all_possible_words.append(new_word)
+        
+        return all_possible_words
+    
+    def generate_words_map(self, wordList):
+        word_map = {}
+    
+        for i in range(len(wordList)):
+            word = wordList[i]
+            new_word = '' 
+
+            for c in range(len(word)):
+                new_word = word[:c] + '*' + word[c + 1:]
+    
+                if new_word not in word_map:
+                    word_map[new_word] = [word]
+                else:
+                    word_map[new_word].append(word)
+    
+        return word_map
