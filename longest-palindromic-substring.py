@@ -1,3 +1,48 @@
+# 2nd attempt
+def longestPalindromicSubstring(s: str):
+    len_substr = 0
+    substr = ''
+
+    if len(s) == 1:
+        return s
+
+    for i in range(len(s) - 1):
+        even_pal = get_even_palindrome(s, i, i + 1)
+        odd_pal = get_odd_palindrome(s, i)
+
+        result = [len(even_pal), even_pal] if len(even_pal) >= len(odd_pal) else [len(odd_pal), odd_pal]
+
+        if result[0] > len_substr:
+            len_substr = result[0] 
+            substr = result[1] 
+
+    return substr
+
+# n, n
+def get_odd_palindrome(s, i):
+    back = i - 1
+    forw = i + 1
+
+    while back >= 0 and forw < len(s):
+        if s[back] == s[forw]:
+            back -= 1
+            forw += 1
+        else:
+            break
+    
+    return s[back + 1: forw] 
+
+# n, n
+def get_even_palindrome(s, back, forw):
+    while back >= 0 and forw < len(s):
+        if s[back] == s[forw]:
+            back -= 1
+            forw += 1
+        else:
+            break
+    
+    return s[back + 1: forw]
+
 def longestPalindromicSubstring(string):
     # Write your code here.
 	# init a list to store the start and end index
