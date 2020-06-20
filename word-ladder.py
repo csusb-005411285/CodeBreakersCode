@@ -10,20 +10,21 @@ class Solution:
         visited[beginWord] = True
     
         while queue:
-            node, steps = queue.popleft() #
-            neighbors = self.get_neighbors(node)
-    
+            word, step = queue.popleft()
+
+            if word in visited and visited[word]: #
+                continue
+
+            if word == endWord:
+                return step 
+            
+            visited[word] = True
+            neighbors = self.get_neighbors(word) #
+
             for neighbor in neighbors:
                 if neighbor in words_map:
-                    for word in words_map[neighbor]:
-                        if endWord == word:
-                            return steps + 1 
-
-                        if word not in visited:
-                            queue.append([word, steps + 1])
-                            visited[word] = True
-                else:
-                    words_map[neighbor] = []
+                    for neigh_word in words_map[neighbor]:
+                        queue.append([neigh_word, step + 1])
         
         return 0
 
