@@ -1,5 +1,4 @@
 class Codec:
-    # https://leetcode.com/problems/serialize-and-deserialize-binary-tree/discuss/396124/Python-very-easy-to-understand-recursive-preorder-with-comments
     def serialize(self, root):
         """Encodes a tree to a single string.
         
@@ -19,7 +18,7 @@ class Codec:
         left_child = self.serialize_helper(root.left)
         right_child = self.serialize_helper(root.right)
         
-        return [curr_node_val, left_child, right_child]
+        return ','.join([curr_node_val, left_child, right_child])
         
         
 
@@ -29,10 +28,18 @@ class Codec:
         :type data: str
         :rtype: TreeNode
         """
-        if data[0] == 'x': return None
+        lst = data.split(',')
+        return self.deserialize_helper(lst)
+    
+    
+    def deserialize_helper(self, lst):
+        if lst[0] == 'x':
+            lst.pop(0)
+            return None
         
-        node = TreeNode(data[0])
-        node.left = self.deserialize(data[1])
-        node.right = self.deserialize(data[2])
+        
+        node = TreeNode(lst.pop(0))
+        node.left = self.deserialize_helper(lst)
+        node.right = self.deserialize_helper(lst)
         
         return node
