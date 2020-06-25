@@ -1,12 +1,24 @@
 def invertBinaryTree(tree):
-	# preflight
-	# if tre is none
-	if tree is None:
-		# return none
-		return None
-	# sqap the left and right nodes
-	tree.left, tree.right = tree.right, tree.left
-	# recusively call the eft node
-	invertBinaryTree(tree.left)
-	# recurively call the right node
-	invertBinaryTree(tree.right)
+    if not tree:
+        return None
+
+    invert_binary_tree_helper(tree)
+    return tree
+
+def invert_binary_tree_helper(root):
+    if not root.left and not root.right:
+        return root 
+
+    left_child = None
+    right_child = None
+    
+    if root.left:
+        left_child = invert_binary_tree_helper(root.left)
+    
+    if root.right: 
+        right_child = invert_binary_tree_helper(root.right) 
+
+    root.left = right_child 
+    root.right = left_child 
+
+    return root 
