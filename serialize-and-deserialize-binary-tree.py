@@ -32,14 +32,20 @@ class Codec:
         return self.deserialize_helper(lst)
     
     
-    def deserialize_helper(self, lst):
-        if lst[0] == 'x':
-            lst.pop(0)
+    def deserialize_helper(self, data):
+        node = data.pop(0) 
+        
+        if node == 'None':
             return None
+       
+        left_child = self.deserialize_helper(data)
+        right_child = self.deserialize_helper(data)
         
-        
-        node = TreeNode(lst.pop(0))
-        node.left = self.deserialize_helper(lst)
-        node.right = self.deserialize_helper(lst)
-        
-        return node
+        n = TreeNode(node)
+        l = left_child
+        r = right_child
+        n.left = l
+        n.right = r
+
+        return n
+
