@@ -6,26 +6,23 @@
 
 class Solution:
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
-        if (headA  is None and headB is None):
-          return  None
-        if (headA  is None and headB is not None):
-          return  None
-        if (headA  is not None and headB is None):
-          return  None
-        # initialize two pointers pA and pB
-        pA = headA
-        pB = headB
-        # loop until the memory location of pA is not equal to memory location of pB
-        while(pA is not pB):
-          # if pA reaches the end then resume traversing headB
-          if (pA is None):
-            pA = headB
-          else:
-            pA = pA.next
-          # if pB reaches the end then resume traversing headA
-          if (pB is None):
-            pB = headA
-          else:
-            pB = pB.next
-        #return pA or pB
-        return pA
+        if not headA or not headB:
+            return None
+            
+        p1 = headA
+        p2 = headB
+
+        while p1 is not p2:
+            p1 = p1.next
+            p2 = p2.next
+
+            if not p1 and not p2:
+                return None
+
+            if not p1:
+                p1 = headB
+
+            if not p2:
+                p2 = headA
+        
+        return p1
