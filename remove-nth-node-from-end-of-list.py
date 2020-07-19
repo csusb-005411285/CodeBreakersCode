@@ -13,10 +13,8 @@ class Solution:
             front = front.next # n
 
         if not front: # n
-            back.val = back.next.val #  2
-            back.next = back.next.next # 2 -> n
-            
-            return back
+            head = head.next # 2
+            return head
 
         while front.next: # 9
             front = front.next # 9
