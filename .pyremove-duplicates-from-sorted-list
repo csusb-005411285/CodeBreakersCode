@@ -1,0 +1,17 @@
+class Solution:
+    def deleteDuplicates(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+            
+        curr_node = head
+
+        # 1 -> 2 -> 2
+        while curr_node and curr_node.next: # 2 2
+            if curr_node.val == curr_node.next.val: 
+                tmp_next_node = curr_node.next.next # N
+                curr_node.next.next = None # 2 -> N
+                curr_node.next = tmp_next_node # 2 -> N
+            else:
+                curr_node = curr_node.next # N
+        
+        return head
