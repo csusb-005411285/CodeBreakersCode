@@ -60,3 +60,28 @@ def is_binary_search_tree(root):
             queue.append([node.right, node.value, ub])
         
     return True
+
+# Recursion
+def is_binary_search_tree(root):
+    if not root:
+        return False
+    
+    if not root.left and not root.right:
+        return True
+
+    return is_binary_search_tree_helper(root, float('inf'), float('-inf'))
+
+def is_binary_search_tree_helper(node, ub, lb): 
+    if not node:
+        return True
+    # if the current node is greater than the upper bound or if it is less than the lower bound
+    if node.value >= ub or node.value < lb:
+        return False
+    
+    # move left, set the upper bound to the current node and the lower bound to -inf
+    left_child = is_binary_search_tree_helper(node.left, node.value, lb) 
+
+    # move right, set the upper bound to inf and the lower bound to current node
+    right_child = is_binary_search_tree_helper(node.right, ub, node.value)
+    # return the results of the left and right child
+    return left_child and right_child
