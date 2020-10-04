@@ -1,40 +1,33 @@
 class Solution:
-  def eventualSafeNodes(self, graph: List[List[int]]) -> List[int]:
-    # Problem of type graph
-    # build an adjacency list from the given information
-    # apply DFS on the graph to find nodes are eventually safe
+  def eventualSafeNodes(self, graph: [[int]]) -> [int]:
+        adj_list = defaultdict(list)
+        vertices_with_no_outgoing_edges = []
+        stack = deque()
+        outdegree_graph = defaultdict(int) 
+        no_of_vertices = len(graph)
 
-    # init a list that would act as an adj list
-    adj_list = collections.defaultdict(list)
-    # init a list that stores the number of outgoing links each node has
-    outgoing_edges = []
-    # init a list that would store the eventual safe nodes
-    eventual_safe_nodes = []
-    # init a queue
-    queue = []
-    for i in range(len(graph)):
-      outgoing_edges.append(len(graph[i]))
-      
-      # if outgoing edges are not present
-      if outgoing_edges[i] == 0:
-        # add it to the queue
-        queue.append(i)
-      
-      # build the adj list  
-      for j in graph[i]: #
-        adj_list[j].append(i) #
+        for i in range(no_of_vertices):
+            outdegree_graph[i] = 0
 
-    print(adj_list)    
-    # perform BFS iteratively
-    while queue:
-      node = queue.pop(0)
-      # then place it in the eventual safe list
-      eventual_safe_nodes.append(node)
-      
-      for n in adj_list[node]:
-        outgoing_edges[n] -= 1
-        # if you encounter a node with no outgoing links 
-        if outgoing_edges[n] == 0:  
-          queue.append(n)
-      
-    return sorted(eventual_safe_nodes)
+        for source in range(no_of_vertices):
+            for dest in graph[source]:
+                adj_list[dest].append(source) 
+                outdegree_graph[source] += 1
+
+        for key, val in outdegree_graph.items():
+            if outdegree_graph[key] == 0:
+                stack.append(key)
+                vertices_with_no_outgoing_edges.append(key)
+
+        while stack:
+            vert = stack.pop()
+
+            if vert in adj_list:
+                for v in adj_list[vert]:
+                    outdegree_graph[v] -= 1
+                
+                    if outdegree_graph[v] == 0:
+                        vertices_with_no_outgoing_edges.append(v)
+                        stack.append(v)
+
+        return sorted(vertices_with_no_outgoing_edges) 
