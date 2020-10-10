@@ -8,15 +8,15 @@ def waterArea(heights):
     water_area = [0 for _ in range(len(heights))]
 
     left_max = 0 
-    for i in range(len(heights)): # 2
+    for i in range(len(heights)):
         # store the max height for the current index. compare the current index value and the max height
         # of pillar found so far
-        max_height_left_pillar[i] = left_max # [0, 0, 8, 8, 8, 8, 8, 8, 10, 10] 
+        max_height_left_pillar[i] = left_max 
         
         # if the height of current index is greater than the max height of a pillar found so far
         # update the left_max 
-        if heights[i] >= left_max: # 5 >= 8
-            left_max = heights[i]  # 8
+        if heights[i] >= left_max: 
+            left_max = heights[i]  
 
     right_max = 0 
     for i in reversed(range(len(heights))):
