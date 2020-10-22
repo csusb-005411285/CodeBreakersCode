@@ -15,3 +15,24 @@ class Solution:
                 index_prev_max_jump = max_jump
         return num_jumps
 
+# DP
+class Solution:
+    def jump(self, nums: [int]) -> int:
+        # define a cache. init it to 0's
+        cache = {} # [0 0 0 0 0]
+        for i in range(len(nums)):
+            cache[i] = float('inf') 
+        cache[0] = 0
+        # loop through the jumps
+        # [2,3,1,1,4]
+        for i in range(len(nums)): # 3
+            # loop from the start to the current jump
+            for j in range(0, i): # 1
+                prev = nums[j] # 3
+                # check if we can reach the current index from the previous index
+                if prev + j >= i: # 3 + 1 >= 3
+                    # get the number of jumps at the previous index + 1
+                    # before storing the value in the cache, check for the min. value
+                    cache[i] = min(cache[i], cache[j] + 1) # [0 1 1 2]
+        # return the value in the final index
+        return cache[len(nums) - 1
