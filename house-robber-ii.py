@@ -13,3 +13,30 @@ class Solution:
         if i == 1:
             return max(nums[0], nums[1])
         return max(nums[i] + self.rob_helper(nums, i - 2), self.rob_helper(nums, i - 1))
+
+  # Recursive solution with memoization.
+class Solution:
+    def __init__(self):
+        self.cache = defaultdict(int) 
+
+    def rob(self, nums: [int]) -> int:
+        if not nums:
+            return 0
+        if len(nums) == 1:
+            return nums[0] 
+        max_option_1 = self.rob_helper(nums[0: len(nums) - 1], len(nums) - 2)
+        self.cache = defaultdict(int)
+        max_option_2 = self.rob_helper(nums[1:], len(nums) - 2)
+        return max(max_option_1, max_option_2)
+
+    def rob_helper(self, nums, i):
+        if i in self.cache:
+            return self.cache[i]
+        if i == 0:
+            self.cache[i] = nums[0]
+            return self.cache[i]
+        if i == 1:
+            self.cache[i] = max(nums[0], nums[1])
+            return self.cache[i]
+        self.cache[i] = max(nums[i] + self.rob_helper(nums, i - 2), self.rob_helper(nums, i - 1))
+        return self.cache[i]
