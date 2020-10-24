@@ -21,3 +21,13 @@ class Solution:
         for i in range(len(nums)):
             self.combination_sum_helper(nums, target, i, candidates + [nums[i]])
         return
+
+    # Memoization and iterative solution.
+    class Solution:
+    def combinationSum4(self, nums: [int], target: int) -> int:
+        cache = [1] + [0] * target
+        for i in range(target + 1): # 4 man
+            for num in nums: 
+                if i >= num:
+                    cache[i] = cache[i] + cache[i - num] 
+        return cache[-1
