@@ -5,7 +5,6 @@ class Solution:
         # use a helper method
         self.word_break_helper(s, 0, wordDict, cache)
         # return cache with key len(s)- 1
-        pprint.pprint(cache)
         return list(cache.values())[-1]
 
     def word_break_helper(self, s, index, wordDict, cache): 
@@ -22,7 +21,6 @@ class Solution:
             prefix = s[index: i + 1] 
             # if prefix in dict
             if prefix in wordDict: 
-                pprint.pprint(prefix)
                 # perfom recursion on suffix
                 is_found_in_dict = self.word_break_helper(s, i + 1, wordDict, cache) 
                 ## This is the key step. 
