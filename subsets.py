@@ -29,7 +29,7 @@ class Solution:
         # return the result
         return self.subset 
 
-# 2nd attempt
+# 2nd approach
 def subsets(self, nums: [int]) -> [[int]]:
   res = []
   nums.sort()
