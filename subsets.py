@@ -28,3 +28,22 @@ class Solution:
         self.subset = result
         # return the result
         return self.subset 
+
+# 2nd attempt
+def subsets(self, nums: [int]) -> [[int]]:
+  res = []
+  nums.sort()
+  
+  def backtrack(nums, cur):
+      res.append(cur)
+      
+      if not nums:
+          return
+      
+      for i in range(len(nums)):
+        if i > 0 and nums[i] == nums[i - 1]:
+          continue
+        backtrack(nums[i + 1:], cur + [nums[i]])
+          
+  backtrack(nums, [])
+  return res
