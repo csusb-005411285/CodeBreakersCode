@@ -1,3 +1,4 @@
+# start from the last index
 class Solution:
     def __init__(self):
         self.cache = []
@@ -5,6 +6,7 @@ class Solution:
 
     def subsetsWithDup(self, nums: [int]) -> [[int]]:
         # sort
+        # Pay attention to this step
         nums.sort()
         # call a helper method
         self.subset_with_dup_helper(nums, len(nums) - 1)
@@ -40,3 +42,37 @@ class Solution:
                 res.append(res[i] + [curr_ele])
         self.cache = res
         return res
+
+# start from the first index
+class Solution:
+    def __init__(self):
+        self.subsets = []
+        self.prev_len = 0
+        
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        arr = nums
+        if not arr: return [[]]
+        # Pay attention to this step
+        arr.sort()
+        self.find_subset_duplicate_helper(arr, 0)
+        return self.subsets
+
+    def find_subset_duplicate_helper(self, arr, index):
+        if index == len(arr): 
+            self.subsets.append([]) 
+            return
+        curr_ele = arr[index]  
+        self.find_subset_duplicate_helper(arr, index + 1) 
+        curr = len(self.subsets)
+        if index + 1 < len(arr) and curr_ele == arr[index + 1]:
+            elements_added_in_last_round = curr - self.prev_len
+            self.prev_len = len(self.subsets)
+            # Pay attention to this step
+            for i in range(curr - elements_added_in_last_round, len(self.subsets)):
+                self.subsets.append(self.subsets[i] + [curr_ele])
+        else:
+            self.prev_len = len(self.subsets)
+            for i in range(len(self.subsets)):
+                new_ele = self.subsets[i] + [curr_ele]
+                self.subsets.append(new_ele)
+        return
