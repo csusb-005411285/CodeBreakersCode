@@ -10,6 +10,31 @@ class Employee:
         # the id of direct subordinates
         self.subordinates = subordinates
 """
+
+# 3rd attempt
+class Solution:
+    def getImportance(self, employees: List['Employee'], id: int) -> int:
+        hmap = defaultdict(Employee)
+        for employee in employees:
+            hmap[employee.id] = employee
+        queue = deque()
+        visited = set()
+        total_importance = 0
+        if id in hmap:
+            queue.append(hmap[id])
+        else:
+            return
+        while queue:
+            emp = queue.popleft()
+            total_importance += emp.importance
+            if emp in visited:
+                continue
+            visited.add(emp)
+            neighbors = emp.subordinates
+            for neigh in neighbors:
+                queue.append(hmap[neigh])
+        return total_importance
+    
 class Solution:
   def getImportance(self, employees: List['Employee'], id: int) -> int:
     # the problem is of type, given a graph, find the total distance of all the nodes that can be rached from 
