@@ -1,3 +1,24 @@
+'''
+ (                                                                           
+        ((                                                                  
+
+            (((                                                         ((      (()
+                    ((()                                        (((                     (()(                                        (()
+                            ((())                       ((()                                    (()()                       (()(    
+                                    ((()))      ((())                                                   (()())      (()()       
+                                            []    ^                                                              []
+                                                  |
+                                                  |
+                                                  |
+                                                  Pay attention to the parent function, it has one less bracket  
+
+    (                                                       
+        ((                      ()                      (
+            (()             ((      ()(             ()
+                (())    (()             ()()    ()(
+                    []                      []
+   
+'''
 class Solution:
     def __init__(self):
         self.parens = []
