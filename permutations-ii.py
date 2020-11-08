@@ -23,3 +23,14 @@ class Solution:
                 # call recursive function
                 self.permute_unique_helper(nums[:i] + nums[i + 1:], curr_perm + [nums[i]], target) 
         return
+
+    # check the previous number for duplicates
+    def permute_unique_helper(self, nums, curr_comb):
+        if len(nums) == 0:
+            self.permutations.append(curr_comb)
+            return
+        for i in range(len(nums)):
+            if (i - 1 >= 0 and nums[i - 1] == nums[i]):
+                continue
+            self.permute_unique_helper(nums[:i] + nums[i + 1:], curr_comb + [nums[i]])
+        return
