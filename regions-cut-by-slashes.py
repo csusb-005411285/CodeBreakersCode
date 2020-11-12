@@ -34,6 +34,7 @@ class Solution:
 
     def regions_by_slashes_helper(self, matrix, visited, vert):
         x, y = vert
+        # Pay attention to this step
         if matrix[x][y] != '':
             return 0
         if vert in visited:
@@ -42,8 +43,7 @@ class Solution:
         num_regions = 1
         for n_x, n_y in [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]:
             if 0 <= n_x < len(matrix) and 0 <= n_y < len(matrix[0]):
-                if matrix[n_x][n_y] == '':
-                    self.regions_by_slashes_helper(matrix, visited, (n_x, n_y))
+                self.regions_by_slashes_helper(matrix, visited, (n_x, n_y))
         return num_regions 
 
 # Iterative DFS
