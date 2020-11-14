@@ -1,3 +1,4 @@
+## Do not use this approach. It is extremely difficult to remember in a stressed environment.
 class Solution:
     def jump(self, nums: [int]) -> int:
         if nums[0] == 0 or len(nums) == 1:
