@@ -1,3 +1,25 @@
+# Readable solution
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        cache = [0 for i in range(len(s))]
+        if s[0] == '0': return 0
+        cache[0] = 1
+        for i in range(1, len(s)):
+            single_digit = int(s[i])
+            two_digit = int(s[i - 1: i + 1])
+            if single_digit == 0:
+                if two_digit > 20 or two_digit < 10:
+                    return 0
+                else:
+                    cache[i] = cache[i - 2] if i - 2 >= 0 else 1
+            else:
+                cache[i] = cache[i - 1]
+                if two_digit > 26 or two_digit < 10:
+                    continue
+                else:
+                    cache[i] += cache[i - 2] if i - 2 >= 0 else 1
+        return cache[-1]
+    
 class Solution:
     def numDecodings(self, s: str) -> int:
         # init a cache
