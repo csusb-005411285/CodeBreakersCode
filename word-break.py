@@ -1,3 +1,15 @@
+# Iterative solution
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        cache = [False for _ in range(len(s))]
+        for i, end_char in enumerate(s):
+            for j, start_char in enumerate(s[:i + 1]):
+                if s[j: i + 1] in wordDict:
+                    does_prefix_exist = cache[j - 1] if j - 1 >=0 else True
+                    if does_prefix_exist:
+                        cache[i] = True
+        return cache[-1]
+
 class Solution:
     def wordBreak(self, s: str, wordDict: [str]) -> bool:
         # use a cache to store values for repeated computations
