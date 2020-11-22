@@ -1,3 +1,28 @@
+# O(n) time and O(1) space in a single pass. This is the preferred solution.
+class Solution:
+    def longestMountain(self, arr: List[int]) -> int:
+        nums = arr
+        max_len = 0
+        if len(arr) < 3: return 0
+        for k in range(1, len(arr)):
+            if k + 1 < len(nums) and nums[k] > nums[k - 1] and nums[k] > nums[k + 1]:
+                curr_count = 0
+                left = k - 1
+                right = k + 1
+                while left - 1 >=0:
+                    if  nums[left - 1] < nums[left]:
+                        left -= 1
+                    else:
+                        break
+                while right + 1 < len(nums):
+                    if nums[right + 1] < nums[right]:
+                        right += 1
+                    else:
+                        break
+                curr_count = (right - left) + 1
+                max_len = max(max_len, curr_count)
+        return max_len
+
 class Solution:
   def longestMountain(self, A: List[int]) -> int:
     # initialize two pointers up and down, both have the length equal to the size of the List, and they all have 0 as value
