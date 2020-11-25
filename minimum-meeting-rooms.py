@@ -1,3 +1,19 @@
+#Without the Meeting class
+def min_meeting_rooms(meetings):
+    meetings.sort(key=lambda x: x[1])
+    meeting_rooms = 0
+    heap = []
+    heap.append((meetings[0][1], meetings[0]))
+    for i, v in enumerate(meetings[1:], start = 1):
+        if heap[0][0] > v[0]:
+            heappush(heap, (v[1], v))
+        else:
+            while heap and heap[0][0] <= v[0]:
+                heappop(heap)
+            heappush(heap, (v[1], v))    
+        meeting_rooms = max(meeting_rooms, len(heap))
+    return meeting_rooms
+  
 class Meeting:
   def __init__(self, start, end):
     self.start = start
