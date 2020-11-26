@@ -1,3 +1,24 @@
+# Input is a list
+class Solution():
+    def find_max_cpu_load(self, jobs):
+        jobs.sort(key = lambda x: x[0])
+        max_load = jobs[0][2]
+        curr_load = jobs[0][2]
+        heap = []
+        heap.append((jobs[0][1], jobs[0]))
+        for i, job in enumerate(jobs[1:], start=1):
+            if job[0] < heap[0][1][1]:
+                    heappush(heap, (job[1], job))
+                    curr_load += job[2]
+                    max_load = max(max_load, curr_load)
+            else:
+                while heap and heap[0][1][1] < job[0]:
+                    heappop(heap)
+                heappush(heap, (job[1], job))
+                curr_load = job[2]
+                max_load = max(max_load, curr_load)
+        return max_load
+    
 class job:
     def __init__(self, start, end, cpu_load):
         self.start = start
