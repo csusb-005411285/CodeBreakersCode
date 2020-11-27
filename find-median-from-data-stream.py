@@ -4,36 +4,28 @@ class MedianFinder:
         """
         initialize your data structure here.
         """
-        self.smaller_heap = []
-        self.larger_heap = []
         self.count = 0
-        
+        self.small = []
+        self.large = []
 
     def addNum(self, num: int) -> None:
-        if self.count % 2 == 0:
-            if self.count == 0:
-                heappush(self.larger_heap, num)
-            elif num < -self.smaller_heap[0]:
-                top_ele = heappop(self.smaller_heap)
-                heappush(self.larger_heap, -top_ele)
-                heappush(self.smaller_heap, -num)
-            else:
-                heappush(self.larger_heap, num)
+        if self.count == 0 or num > self.large[0]:
+            heappush(self.large, num)
         else:
-            if num > self.larger_heap[0]:
-                top_ele = heappop(self.larger_heap)
-                heappush(self.smaller_heap, -top_ele)
-                heappush(self.larger_heap, num)
-            else:
-                heappush(self.smaller_heap, -num)
+            heappush(self.small, -num)
+        if len(self.small) > len(self.large) and len(self.small) - len(self.large) >= 2:
+            top = heappop(self.small)
+            heappush(self.large, -top)
+        elif len(self.large) > len(self.small) and len(self.large) - len(self.small) >= 2:
+            top = heappop(self.large)
+            heappush(self.small, -top)
         self.count += 1
 
     def findMedian(self) -> float:
-        if self.count % 2 == 0:
-            return (self.larger_heap[0] - self.smaller_heap[0])/2
+        if self.count % 2 == 0: 
+            return ((-self.small[0]) + self.large[0])/2
         else:
-            return self.larger_heap[0]
-
+            return -self.small[0] if len(self.small) > len(self.large) else self.large[0]
 
 # Your MedianFinder object will be instantiated and called as such:
 # obj = MedianFinder()
