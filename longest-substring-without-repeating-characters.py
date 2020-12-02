@@ -244,7 +244,8 @@ class Solution:
     
     return max_len
 
-  # Two pointer template
+# Two pointer template
+def lengthOfLongestSubstring(self, s: str) -> int:
   if not s: return 0
         max_len = 0
         length = 0
