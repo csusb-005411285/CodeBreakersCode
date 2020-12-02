@@ -243,3 +243,16 @@ class Solution:
       max_len = max(max_len, len(s[start:end]))
     
     return max_len
+
+  # Two pointer template
+  if not s: return 0
+        max_len = 0
+        length = 0
+        left = 0
+        right = 0
+        for right, rchar in enumerate(s):
+            if s.find(rchar, left, right) != -1:
+                left = s.find(rchar, left, right) + 1
+            length = len(s[left: right + 1])
+            max_len = max(max_len, length)
+        return max_len
