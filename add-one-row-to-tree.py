@@ -21,7 +21,6 @@ class Solution:
             queue.append(neighbors)
             count -= 1    
         for node in nodes:
-            new_node = TreeNode(v, node.left, node.right)
             node.left = TreeNode(v, node.left, None)
             node.right = TreeNode(v, None, node.right)
         return root
