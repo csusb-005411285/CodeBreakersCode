@@ -1,33 +1,24 @@
 class Solution:
-    def canFinish(self, numCourses: int, prerequisites: [[int]]) -> bool:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         adj_list = defaultdict(list)
-        vertices_with_no_incoming_edges = []
-        stack = deque()
-        indegree_graph = defaultdict(int) 
-
-        for i in range(numCourses):
-            indegree_graph[i] = 0
-        
-        for i in range(len(prerequisites)):
-            source = prerequisites[i][1]
-            dest = prerequisites[i][0]
-            adj_list[source].append(dest) 
-            indegree_graph[dest] += 1 
-        
-        for key, val in indegree_graph.items():
-            if indegree_graph[key] == 0:
-                stack.append(key)
-                vertices_with_no_incoming_edges.append(key)
-
-        while stack:
-            vert = stack.pop()
-
-            if vert in adj_list:
-                for v in adj_list[vert]:
-                    indegree_graph[v] -= 1
-                
-                    if indegree_graph[v] == 0:
-                        vertices_with_no_incoming_edges.append(v)
-                        stack.append(v)
-            
-        return len(vertices_with_no_incoming_edges) == numCourses
+        indegree = {i: 0 for i in range(numCourses)}
+        visited = set()
+        queue = deque()
+        for start, end in prerequisites:
+            adj_list[start].append(end)
+            indegree[end] += 1
+        for k, v in indegree.items():
+            if v == 0: queue.append([k])
+        while queue:
+            nodes = queue.pop()
+            neighbors = []
+            for node in nodes:
+                visited.add(node)
+                for start_vert in adj_list[node]:
+                    indegree[start_vert] -= 1
+            for k, v in indegree.items():
+                if v <= 0 and k not in visited: 
+                    neighbors.append(k)
+            if neighbors:
+                queue.append(neighbors)
+        return True if len(visited) == numCourses else False
