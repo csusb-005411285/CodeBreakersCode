@@ -1,3 +1,20 @@
+# leetcode
+class Solution:
+    def maxPathSum(self, root: TreeNode) -> int:
+        if not root: return 0
+        max_branch_path, max_path = self.max_path_sum_helper(root)
+        return max_path
+    
+    def max_path_sum_helper(self, node):
+        if not node.left and not node.right: return (node.val, node.val)
+        left_path, right_path, left_tree_max_path, right_tree_max_path = float('-inf'),float('-inf'),float('-inf'),float('-inf')
+        if node.left: left_path, left_tree_max_path = self.max_path_sum_helper(node.left)
+        if node.right: right_path, right_tree_max_path = self.max_path_sum_helper(node.right)
+        max_node = max(left_path, right_path)
+        max_path_with_parent = max(max_node + node.val, node.val)
+        max_sum_tree = max(left_tree_max_path, right_tree_max_path, left_path + right_path + node.val, max_path_with_parent) # pay attention to this step
+        return (max_path_with_parent, max_sum_tree)
+
 def maxPathSum(tree):
     _, max_path_sum = maxPathSumHelper(tree)
 	return max_path_sum
