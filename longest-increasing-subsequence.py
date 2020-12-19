@@ -1,3 +1,16 @@
+# leetcode
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        cache = [1 for i in nums]
+        max_len = 0
+        for i, num in enumerate(nums[1:], start=1):
+            subseq_len = 0
+            for j in range(i):
+                if nums[j] < num:
+                    subseq_len = max(subseq_len, cache[j] + cache[i])
+            cache[i] = max(cache[i], subseq_len)
+        return max(cache)
+    
 def longestIncreasingSubsequence(array):
     if len(array) <= 1:
         return array
