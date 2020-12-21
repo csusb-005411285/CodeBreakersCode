@@ -1,3 +1,20 @@
+# Concise
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        cache = [[0 for _ in range(len(word2) + 1)] for _ in range(len(word1) + 1)]
+        for row in range(len(cache)):
+            for col in range(len(cache[0])):
+                if row == 0: 
+                    cache[0][col] = col
+                elif col == 0: 
+                    cache[row][col] = row
+                else:
+                    if word1[row - 1] == word2[col - 1]:
+                        cache[row][col] = cache[row - 1][col - 1]
+                    else:
+                        cache[row][col] = min(cache[row - 1][col], cache[row][col - 1]) + 1
+        return cache[-1][-1]
+    
 class Solution:
     def minDistance(self, word1: str, word2: str) -> int:
         if not word1 and not word2:
