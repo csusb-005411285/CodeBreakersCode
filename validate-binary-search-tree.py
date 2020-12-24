@@ -1,3 +1,13 @@
+# Concise
+class Solution:
+    def isValidBST(self, root: TreeNode) -> bool:
+        return self.is_valid_bst_helper(root, float('-inf'), float('inf'))
+    
+    def is_valid_bst_helper(self, node, lower_bound, upper_bound):
+        if not node: return True
+        if node.val <= lower_bound or node.val >= upper_bound: return False
+        return self.is_valid_bst_helper(node.left, lower_bound, node.val) and self.is_valid_bst_helper(node.right, node.val, upper_bound) 
+    
 class Solution:
     def isValidBST(self, root: TreeNode) -> bool:
         if not root:
