@@ -3,6 +3,31 @@ from collections import deque
 class BSTIterator:
 
     def __init__(self, root: TreeNode):
+        self.inorder_list = []
+        stack = deque()
+        while root or stack:
+            while root:
+                stack.append(root)
+                root = root.left
+            node = stack.pop()
+            self.inorder_list.append(node)
+            root = node.right
+        self.ptr = 0
+
+    def next(self) -> int:
+        node = None
+        if self.hasNext():
+            node = self.inorder_list[self.ptr].val
+            self.ptr += 1
+        return node
+
+    def hasNext(self) -> bool:
+        return self.ptr < len(self.inorder_list)
+
+  
+class BSTIterator:
+
+    def __init__(self, root: TreeNode):
         if not root:
             self.arr = []
         
