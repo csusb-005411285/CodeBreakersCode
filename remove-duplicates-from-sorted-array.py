@@ -1,4 +1,13 @@
 class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        left = 0
+        for right in range(len(nums) - 1):
+            if nums[right] != nums[right + 1]:
+                left += 1
+                nums[left] = nums[right + 1]
+        return left + 1
+      
+class Solution:
   def removeDuplicates(self, nums: List[int]) -> int:
     # initalize the curr index to point at the first index
     slow_pointer = 1
