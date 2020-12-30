@@ -1,20 +1,22 @@
-n1 = m - 1
-        n2 = n - 1
-        right = len(nums1) - 1
-        while n1 >= 0 and n2 >= 0:
-            v1 = nums1[n1]
-            v2 = nums2[n2]
-            if v2 > v1:
-                nums1[right] = v2
-                right -= 1
-                n2 -= 1
+class Solution:
+    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        """
+        Do not return anything, modify nums1 in-place instead.
+        """
+        ptr1 = len(nums1) - len(nums2) - 1
+        ptr2 = len(nums2) - 1
+        insert_at = len(nums1) - 1
+        while ptr1 >= 0 and ptr2 >= 0:
+            if nums2[ptr2] >= nums1[ptr1]:
+                nums1[insert_at] = nums2[ptr2]
+                insert_at -= 1
+                ptr2 -= 1
             else:
-                nums1[right] = v1
-                right -= 1
-                n1 -= 1
-        if n1 < 0 and n2 >= 0:
-            while right >= 0 and n2 >= 0:
-                nums1[right] = nums2[n2]
-                n2 -= 1
-                right -= 1
+                nums1[insert_at], nums1[ptr1] = nums1[ptr1], nums1[insert_at]
+                insert_at -= 1
+                ptr1 -= 1
+        while ptr2 >= 0 and insert_at >= 0:
+            nums1[insert_at] = nums2[ptr2]
+            insert_at -= 1
+            ptr2 -= 1
         return nums1
