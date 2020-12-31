@@ -1,15 +1,20 @@
 class Solution:
     def getSum(self, a: int, b: int) -> int:
-        if abs(a)<abs(b):
+        if abs(a) < abs(b):
             a, b = b, a
-        x, y = abs(a), abs(b)
-        sign = 1 if a>=0 else -1
-        if a*b >= 0:
-          #sum
-          while y!=0:
-            x, y = x^y, ((x&y)<<1)
+        sign = False if a >= 0 else True
+        x = abs(a)
+        y = abs(b)
+        if a * b > 0:
+            while y:
+                sum_without_carry = x ^ y
+                carry = (x & y) << 1
+                y = carry
+                x = sum_without_carry
         else:
-          #diff
-          while y!=0:
-            x, y = x^y, (((~x)&y)<<1)
-        return x*sign
+            while y:
+                sum_without_carry = x ^ y
+                carry = (~x & y) << 1
+                y = carry
+                x = sum_without_carry
+        return -x if sign else x
