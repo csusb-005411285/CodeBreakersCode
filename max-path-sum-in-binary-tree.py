@@ -1,3 +1,27 @@
+# Global variable
+class Solution:
+    def __init__(self):
+        self.max_path_sum = float('-inf')
+        
+    def maxPathSum(self, root: TreeNode) -> int:
+        if root is None:
+            return None
+        self._max_path_sum(root)
+        return self.max_path_sum
+    
+    def _max_path_sum(self, node):
+        if not node:
+            return float('-inf')
+        if node and node.left is None and node.right is None:
+            self.max_path_sum = max(self.max_path_sum, node.val)
+            return node.val
+        left_branch_val = self._max_path_sum(node.left)
+        right_branch_val = self._max_path_sum(node.right)
+        max_val_branches = max(left_branch_val, right_branch_val)
+        max_path = max(node.val, node.val + max_val_branches)
+        self.max_path_sum = max(self.max_path_sum, node.val + left_branch_val + right_branch_val, max_path)
+        return max_path
+
 # leetcode
 class Solution:
     def maxPathSum(self, root: TreeNode) -> int:
