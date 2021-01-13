@@ -1,4 +1,21 @@
 class Solution:
+    def find_parent(self, parents, vert):
+        if parents[vert] == 0:
+            return vert
+        return self.find_parent(parents, parents[vert])
+    
+    def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
+        parents = [0 for _ in range(len(edges))]
+        for i, edge in enumerate(edges):
+            x, y = edge
+            if self.find_parent(parents, x - 1) == self.find_parent(parents, y - 1):
+                return [x, y]
+            parent_x = self.find_parent(parents, x - 1)
+            parent_y = self.find_parent(parents, y - 1)
+            parents[parent_x] = parent_y
+        return [-1, -1]
+      
+class Solution:
   
   # init a constructor
   def __init__(self):
