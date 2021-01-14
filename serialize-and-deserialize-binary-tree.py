@@ -1,3 +1,48 @@
+# Compact
+class Codec:
+
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        
+        :type root: TreeNode
+        :rtype: str
+        """
+        serialized_tree = []
+        self._serialize(root, serialized_tree)
+        return ','.join(serialized_tree)
+    
+    def _serialize(self, node, serialized_tree):
+        if node is None:
+            serialized_tree.append('x')
+            return
+        serialized_tree.append(str(node.val))
+        self._serialize(node.left, serialized_tree)
+        self._serialize(node.right, serialized_tree)
+        return 
+        
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: TreeNode
+        """
+        if not data:
+            return None
+        node_list = split(',', data)
+        return self._deserialize(node_list)
+    
+    def _deserialize(self, node_list):
+        if not node_list:
+            return None
+        node_val = node_list.pop(0)
+        if node_val == 'x':
+            return None
+        node = TreeNode(node_val)
+        node.left = self._deserialize(node_list)
+        node.right = self._deserialize(node_list)
+        return node
+
 class Codec:
     def serialize(self, root):
         """Encodes a tree to a single string.
