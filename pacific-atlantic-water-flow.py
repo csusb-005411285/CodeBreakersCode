@@ -1,3 +1,46 @@
+p = print
+class Solution:
+    def pacificAtlantic(self, matrix: List[List[int]]) -> List[List[int]]:
+        edge_atlantic, edge_pacific, cells_atlantic, cells_pacific, cells_both = [], [], set(), set(), []
+        visited = set()
+        for row in range(len(matrix)):
+            for col in range(len(matrix[0])):
+                if row == 0 and col == len(matrix[0]) - 1:
+                    edge_atlantic.append((row, col))
+                    edge_pacific.append((row, col))
+                if row == len(matrix) - 1 and col == 0:
+                    edge_pacific.append((row, col))
+                    edge_atlantic.append((row, col))
+                if row == 0:
+                    edge_pacific.append((row, col))
+                if col == 0:
+                    edge_pacific.append((row, col))
+                if row == len(matrix) - 1:
+                    edge_atlantic.append((row, col))
+                if col == len(matrix[0]) - 1:
+                    edge_atlantic.append((row, col))
+        for vert in edge_atlantic:
+            self._pacific_atlantic(matrix, vert, visited, cells_atlantic)
+        visited = set()
+        for vert in edge_pacific:
+            self._pacific_atlantic(matrix, vert, visited, cells_pacific)
+        for cell in cells_atlantic:
+            if cell in cells_pacific:
+                cells_both.append(list(cell))
+        return cells_both
+    
+    def _pacific_atlantic(self, matrix, vert, visited, cells_ocean):
+        x, y = vert
+        if (x, y) in visited:
+            return
+        visited.add(vert)
+        cells_ocean.add(vert)
+        for neigh_x, neigh_y in [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]:
+            if 0 <= neigh_x < len(matrix) and 0 <= neigh_y < len(matrix[0]):
+                if matrix[neigh_x][neigh_y] >= matrix[x][y] and (neigh_x, neigh_y) not in visited:
+                    self._pacific_atlantic(matrix, (neigh_x, neigh_y), visited, cells_ocean)   
+        return 
+      
 class Solution:
   # https://leetcode.com/problems/pacific-atlantic-water-flow/discuss/90739/Python-DFS-bests-85.-Tips-for-all-DFS-in-matrix-question.  
   def get_neighboring_cells(self, matrix, i, j):
