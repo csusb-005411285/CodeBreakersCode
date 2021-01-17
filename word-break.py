@@ -1,3 +1,24 @@
+# Recursive solution
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        cache = [None] * (len(s))
+        self._wordBreak(wordDict, s ,0, cache)
+        return cache[0]
+    
+    def _wordBreak(self, words, s, index, cache):
+        if not s:
+            return True
+        if cache[index] is not None:
+            return cache[index]
+        for word in words:
+            if not s.startswith(word):
+                continue
+            if self._wordBreak(words, s[len(word):], index + len(word), cache):
+                cache[index] = True
+                return True
+        cache[index] = False
+        return False
+
 # Iterative solution
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
