@@ -1,45 +1,43 @@
-p = print
 class Solution:
     def pacificAtlantic(self, matrix: List[List[int]]) -> List[List[int]]:
-        edge_atlantic, edge_pacific, cells_atlantic, cells_pacific, cells_both = [], [], set(), set(), []
-        visited = set()
+        cells_pacific_ocean = []
+        cells_atlantic_ocean = []
+        self.get_cells_that_touch_pacific_ocean(matrix, cells_pacific_ocean)
+        self.get_cells_that_touch_atlantic_ocean(matrix, cells_atlantic_ocean)
+        cells_reach_pacific_ocean = set()
+        cells_reach_atlantic_ocean = set()
+        for vert in cells_pacific_ocean:
+            self._dfs(matrix, cells_reach_both_oceans, vert, set(), cells_reach_pacific_ocean)
+        for vert in cells_atlantic_ocean:
+            self._dfs(matrix, cells_reach_both_oceans, vert, set(), cells_reach_atlantic_ocean)
+        return self.get_cells_reach_both_oceans(cells_reach_pacific_ocean, cells_reach_atlantic_ocean)
+    
+    def get_cells_that_touch_pacific_ocean(self, matrix, cells_pacific_ocean):
         for row in range(len(matrix)):
             for col in range(len(matrix[0])):
-                if row == 0 and col == len(matrix[0]) - 1:
-                    edge_atlantic.append((row, col))
-                    edge_pacific.append((row, col))
-                if row == len(matrix) - 1 and col == 0:
-                    edge_pacific.append((row, col))
-                    edge_atlantic.append((row, col))
-                if row == 0:
-                    edge_pacific.append((row, col))
-                if col == 0:
-                    edge_pacific.append((row, col))
-                if row == len(matrix) - 1:
-                    edge_atlantic.append((row, col))
-                if col == len(matrix[0]) - 1:
-                    edge_atlantic.append((row, col))
-        for vert in edge_atlantic:
-            self._pacific_atlantic(matrix, vert, visited, cells_atlantic)
-        visited = set()
-        for vert in edge_pacific:
-            self._pacific_atlantic(matrix, vert, visited, cells_pacific)
-        for cell in cells_atlantic:
-            if cell in cells_pacific:
-                cells_both.append(list(cell))
-        return cells_both
+                if col == 0 or row == 0:
+                    cells_pacific_ocean.append([row, col])
     
-    def _pacific_atlantic(self, matrix, vert, visited, cells_ocean):
-        x, y = vert
-        if (x, y) in visited:
+    def get_cells_that_touch_atlantic_ocean(self, matrix, cells_atlantic_ocean):
+        for row in range(len(matrix)):
+            for col in range(len(matrix[0])):
+                if col == len(matrix[0]) - 1 or row == len(matrix) - 1:
+                    cells_atlantic_ocean.append([row, col])
+    
+    def _dfs(self, matrix, cells_reach_both_oceans, vert, visited, can_reach_ocean):
+        row, col = vert
+        if (row, col) in visited:
             return
-        visited.add(vert)
-        cells_ocean.add(vert)
-        for neigh_x, neigh_y in [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]:
-            if 0 <= neigh_x < len(matrix) and 0 <= neigh_y < len(matrix[0]):
-                if matrix[neigh_x][neigh_y] >= matrix[x][y] and (neigh_x, neigh_y) not in visited:
-                    self._pacific_atlantic(matrix, (neigh_x, neigh_y), visited, cells_ocean)   
-        return 
+        visited.add((row, col))
+        can_reach_ocean.add((row, col))
+        for neighbor_row, neighbor_col in [(row + 1, col), (row - 1, col), (row, col + 1), (row, col - 1)]:
+            if 0 <= neighbor_row < len(matrix) and 0 <= neighbor_col < len(matrix[0]):
+                if matrix[neighbor_row][neighbor_col] >= matrix[row][col]:
+                    self._dfs(matrix, cells_reach_both_oceans, [neighbor_row, neighbor_col], visited, can_reach_ocean)     
+        
+    
+    def get_cells_reach_both_oceans(self, cells_reach_pacific_ocean, cells_reach_atlantic_ocean):
+        return list(set(cells_reach_pacific_ocean) & set(cells_reach_atlantic_ocean))
       
 class Solution:
   # https://leetcode.com/problems/pacific-atlantic-water-flow/discuss/90739/Python-DFS-bests-85.-Tips-for-all-DFS-in-matrix-question.  
