@@ -1,15 +1,17 @@
 class Solution:
+    def can_finish_eating_bananas(self, rate, piles, total_hours):
+        hours = []
+        for i, pile in enumerate(piles):
+            hours.append(math.ceil((pile/rate)))
+        return sum(hours) <= total_hours
+
     def minEatingSpeed(self, piles: List[int], H: int) -> int:
-        lo = 1
-        hi = max(piles)
-        mid = 0
-        while lo < hi:
-            mid = lo + (hi - lo)//2
-            if self.can_eat_all_bananas_at_current_rate(mid, H, piles):
-                hi = mid
+        left = 1
+        right = max(piles)
+        while left < right:
+            mid = left + (right - left)//2 
+            if self.can_finish_eating_bananas(mid, piles, H):
+                right = mid
             else:
-                lo = mid + 1
-        return lo
-    
-    def can_eat_all_bananas_at_current_rate(self, rate, total_hours, piles):
-        return sum((pile - 1)//rate + 1 for pile in piles) <= total_hours
+                left = mid + 1
+        return left
