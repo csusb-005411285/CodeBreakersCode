@@ -1,3 +1,29 @@
+# Floyd-Warshall's algorithm
+class Solution:
+    def findTheCity(self, n: int, edges: List[List[int]], distanceThreshold: int) -> int:
+        dist_matrix = [[float('inf')]*n for i in range(n)]
+        for node1, node2, cost in edges:
+            dist_matrix[node1][node2] = dist_matrix[node2][node1] = cost   
+        for node in range(n):
+            dist_matrix[node][node] = 0 
+        for k in range(n):
+            for i in range(n):
+                for j in range(n):
+                    dist_matrix[i][j] = min(dist_matrix[i][j], dist_matrix[i][k] + dist_matrix[k][j])
+        shortest_distance = float('inf')
+        final_vert = None
+        for row in range(len(dist_matrix)):
+            count = 0
+            for col in range(len(dist_matrix[0])):
+                if dist_matrix[row][col] != float('inf'):
+                    if dist_matrix[row][col] <= distanceThreshold:
+                        count += 1
+            if count <= shortest_distance:
+                shortest_distance = count
+                final_vert = row
+        return final_vert
+    
+
 class Solution:
     def findTheCity(self, n: int, edges: [[int]], distanceThreshold: int) -> int:
         graph = defaultdict(list)
