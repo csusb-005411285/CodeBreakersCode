@@ -1,43 +1,25 @@
 class Solution:
-    def networkDelayTime(self, times: [[int]], N: int, K: int) -> int:
-        graph = defaultdict(list)
-        queue = [] 
-        visited = []
-        result = [float('-inf') for i in range(N + 1)]
-
-        if N == 1:
-            return 0
-
-        for time in times:
-            src = time[0]
-            dest = time[1]
-            cost = time[2]
-
-            graph[src].append((dest, cost))
-
-        if K in graph: 
-            queue.append((0, K)) 
-        else:
-            return -1
-
-        
-        while queue:
-            # pop the vertex with the smallest distance from source
-            dist, node = heapq.heappop(queue)
-
-            if node in visited:
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        adj_list = defaultdict(list)
+        heap = []
+        visited = set()
+        max_cost = 0
+        self.build_adj_list(times, adj_list)
+        heappush(heap, (0, k))
+        while heap:
+            node = heappop(heap)
+            cost, vert = node
+            if vert in visited:
                 continue
-            
-            result[node] = dist
-            visited.append(node)
-
-            for vert in graph[node]:
-                neigh_vert = vert[0]
-                neigh_cost = vert[1]
-
-                heapq.heappush(queue, (dist + neigh_cost, neigh_vert))
-
-        if float('-inf') in set(result[1:]):
-            return -1 
-
-        return max(result) if max(result) != 0 else -1
+            visited.add(vert)
+            max_cost = max(max_cost, cost)
+            for neighbor in adj_list[vert]:
+                vert, cost_vert = neighbor
+                if vert not in visited:
+                    heappush(heap, (cost + cost_vert, vert))
+        return max_cost if max_cost > 0 and len(visited) == n else -1
+    
+    def build_adj_list(self, edges, adj_list):
+        for edge in edges:
+            src, dest, cost = edge
+            adj_list[src].append((dest, cost))
