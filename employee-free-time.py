@@ -9,16 +9,15 @@
 '''
 class Solution:
     def employeeFreeTime(self, schedule: '[[Interval]]') -> '[Interval]':
-        heap = []
+        all_schedules = []
         free_times = []
         for i, intervals in enumerate(schedule):
-            for interval in intervals:
-                heap.append((interval.start, interval.end))
-        heapify(heap)
-        _, free_interval_start_time = heappop(heap)
-        while heap:
-            start_time, end_time = heappop(heap)
-            if free_interval_start_time < start_time:
-                free_times.append(Interval(free_interval_start_time, start_time))
-            free_interval_start_time = max(free_interval_start_time, end_time)
+            for j, interval in enumerate(intervals):
+                all_schedules.append(interval)
+        all_schedules.sort(key=lambda x: x.start)
+        last_free_interval_end_time = all_schedules[0].end
+        for k, interval in enumerate(all_schedules[1:], start=1):
+            if last_free_interval_end_time < interval.start:
+                free_times.append(Interval(last_free_interval_end_time, interval.start))
+            last_free_interval_end_time = max(last_free_interval_end_time, interval.end)
         return free_times
