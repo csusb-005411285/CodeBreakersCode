@@ -9,15 +9,17 @@
 '''
 class Solution:
     def employeeFreeTime(self, schedule: '[[Interval]]') -> '[Interval]':
-        all_schedules = []
-        free_times = []
+        flattened_schedules = []
         for i, intervals in enumerate(schedule):
             for j, interval in enumerate(intervals):
-                all_schedules.append(interval)
-        all_schedules.sort(key=lambda x: x.start)
-        last_free_interval_end_time = all_schedules[0].end
-        for k, interval in enumerate(all_schedules[1:], start=1):
-            if last_free_interval_end_time < interval.start:
-                free_times.append(Interval(last_free_interval_end_time, interval.start))
-            last_free_interval_end_time = max(last_free_interval_end_time, interval.end)
-        return free_times
+                flattened_schedules.append(interval)
+        flattened_schedules.sort(key = lambda x: x.start)
+        common_intervals = []
+        free_interval_start_time = flattened_schedules[0].end
+        for i, interval in enumerate(flattened_schedules[1:], start = 1):
+            if free_interval_start_time >= interval.start:
+                free_interval_start_time = max(free_interval_start_time, interval.end)
+            else:
+                common_intervals.append(Interval(free_interval_start_time, interval.start))
+                free_interval_start_time = interval.end
+        return common_intervals
