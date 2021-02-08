@@ -1,15 +1,14 @@
 class Solution:
     def __init__(self):
-        self.output_list = set()
-        self.max_str_len = 0
-        self.cache = defaultdict(str)
-        
-    def check_valid_parentheses(self, s):
+        self.all_possible = set()
+        self.max_len = 0
+
+    def is_valid_parentheses(self, s):
         stack = []
-        for p in s:
-            if p == '(':
-                stack.append(p)
-            if p == ')':
+        for i, char in enumerate(s):
+            if char == '(':
+                stack.append(char)
+            elif char == ')':
                 if stack:
                     stack.pop()
                 else:
@@ -17,27 +16,26 @@ class Solution:
         return True if not stack else False
 
     def removeInvalidParentheses(self, s: str) -> List[str]:
-        if not s:
-            return [""]
-        self._remove_invalid_parenthesis(s)
-        return list(filter(lambda x: len(x) == self.max_str_len, self.output_list))
-
-    def _remove_invalid_parenthesis(self, s):
-        if s in self.cache:
-            self.output_list.add(self.cache[s])
+        cache = defaultdict(str)
+        self._remove_invalid_parentheses(s, cache)
+        return list(filter(lambda x: len(x) == self.max_len, self.all_possible))
+    
+    def _remove_invalid_parentheses(self, s, cache):
+        if s in cache:
+            self.all_possible.add(cache[s])
             return
         if not s:
-            return []
-        if self.check_valid_parentheses(s):
-            self.output_list.add(s)
-            self.max_str_len = max(self.max_str_len, len(s))
-        for i in range(len(s)):
-            new_str = s[:i] + s[i + 1:]
-            if self.check_valid_parentheses(new_str):
-                self.cache[new_str] = new_str
-                self.output_list.add(new_str)
-                self.max_str_len = max(self.max_str_len, len(new_str))
-            self._remove_invalid_parenthesis(new_str)
-        self.cache[s] = '' if s not in self.cache else self.cache
+            self.all_possible.add('')
+            return 
+        if self.is_valid_parentheses(s):
+            if len(s) >= self.max_len:
+                self.max_len = len(s)
+                self.all_possible.add(s)
+                cache[s] = s
+                return
+        for i, char in enumerate(s):
+            new_string = s[:i] + s[i + 1:]
+            self._remove_invalid_parentheses(new_string, cache)
+        if s not in cache:
+            cache[s] = ''
         return
-        
