@@ -1,3 +1,47 @@
+# concise
+class Solution:
+    def __init__(self):
+        self.units = {0: '', 1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five', 6: 'six', 7: 'seven', 8: 'eight', 9: 'nine', 10: 'ten'}
+        self.teens = {11: 'eleven', 12:'twelve', 13: 'thirteen', 14: 'fourteen', 15: 'fifteen', 16: 'sixteen', 17: 'seventeen', 18: 'eighteen', 19: 'nineteen'}
+        self.tens = {2: 'twenty', 3: 'thirty', 4: 'forty', 5: 'fifty', 6: 'sixty', 7: 'seventy', 8: 'eighty', 9: 'ninety'}
+
+    def numberToWords(self, num: int) -> str:
+        if num == 0:
+            return "Zero"
+        words = ''
+        billionth, million = divmod(num, 1000000000)
+        millionth, thousand = divmod(million, 1000000)
+        thousandth, hundred = divmod(thousand, 1000)
+        if billionth:
+            words += self.process_three_digits(billionth) + ' Billion'
+        if millionth:
+            words +=  ' ' + self.process_three_digits(millionth) + ' Million' if billionth else self.process_three_digits(millionth)  + ' Million'
+        if thousandth:
+            words += ' ' + self.process_three_digits(thousandth) + ' Thousand' if millionth else self.process_three_digits(thousandth) + ' Thousand'
+        if hundred:
+            words += ' ' + self.process_three_digits(hundred) if thousandth or millionth or billionth else self.process_three_digits(hundred)
+        return words
+    
+    def process_three_digits(self, digits):
+        three_digits = ''
+        hundredth, tens = divmod(digits, 100)
+        # 100, 101, 123, 23, 3, 
+        if hundredth:
+            three_digits += self.units[hundredth] + ' Hundred'
+        if tens:
+            three_digits += ' ' + self.process_two_digits(tens) if hundredth else self.process_two_digits(tens)
+        return three_digits.title()
+
+    def process_two_digits(self, digits):
+        two_digits = ''
+        if digits <= 10:
+            return self.units[digits]
+        if digits < 20:
+            return self.teens[digits]
+        div, mod = divmod(digits, 10)
+        two_digits += self.tens[div] + ' ' + self.units[mod] if self.units[mod] else self.tens[div]
+        return two_digits.title()
+
 class Solution:
     def __init__(self):
         self.units =  { 1: 'One', 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five', 6: 'Six', 7: 'Seven', 8: 'Eight', 9: 'Nine'}
