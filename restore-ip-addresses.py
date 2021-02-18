@@ -1,3 +1,35 @@
+class Solution:
+    def __init__(self):
+        self.ip_address = set()
+
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        if len(s) > 12:
+            return []
+        self._restore_ip_addresses(s, '')
+        return list(self.ip_address)
+    
+    def _restore_ip_addresses(self, s, curr_comb):
+        if not s:
+            if len(curr_comb.split('.')) == 4:
+                self.ip_address.add(curr_comb)
+                return
+        for j in range(3, -1, -1):
+            part = s[:j]
+            if self.is_valid_segment(part):
+                ip_part = curr_comb + '.' +  str(part) if curr_comb != '' else str(part)
+                self._restore_ip_addresses(s[len(part):], ip_part)
+        return
+    
+    def is_valid_segment(self, segment):
+        if not segment or (len(segment) > 1 and segment[0] == '0'):
+            return False
+        seg_int = int(segment)
+        if seg_int > 255 or len(segment) > 3:
+            return False
+        return True
+        
+
+
 # TLE
 class Solution:
     def is_valid_integer(self, s):
