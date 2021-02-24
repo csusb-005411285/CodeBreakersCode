@@ -1,3 +1,35 @@
+# indices
+class Solution:
+    def __init__(self):
+        self.all_possible = set()
+        
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        self._restore_ip_address(s, '', 0, 0)
+        return self.all_possible
+    
+    def _restore_ip_address(self, s, choice, dots, index):
+        if dots > 4:
+            return
+        if index >= len(s):
+            if dots == 4:
+                self.all_possible.add(choice)
+            return
+        for i in range(3, 0, -1):
+            segment = s[index: index + i]
+            if self.is_valid_segment(segment):
+                curr_choice = choice + '.' + segment if choice != '' else segment
+                self._restore_ip_address(s, curr_choice, dots + 1, index + len(segment))
+        return
+    
+    def is_valid_segment(self, s):
+        if len(s) < 1:
+            return False
+        if len(s) > 1 and s[0] == '0':
+            return False
+        if int(s) > 255:
+            return False
+        return True
+
 class Solution:
     def __init__(self):
         self.ip_address = set()
