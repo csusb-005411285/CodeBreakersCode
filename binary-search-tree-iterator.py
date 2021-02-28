@@ -1,3 +1,25 @@
+class BSTIterator:
+
+    def __init__(self, root: TreeNode):
+        self.iterator = []
+        self._process_nodes(root)
+
+    def _process_nodes(self, node):
+        if not node:
+            return
+        self.iterator.append(node)
+        self._process_nodes(node.left)        
+
+    def next(self) -> int:
+        node = self.iterator.pop()
+        if node.right:
+            self._process_nodes(node.right)
+        return node.val
+
+    def hasNext(self) -> bool:
+        return len(self.iterator) != 0
+    
+
 from collections import deque
 
 class BSTIterator:
