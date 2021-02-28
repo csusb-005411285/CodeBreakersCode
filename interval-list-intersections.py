@@ -1,23 +1,21 @@
 class Solution:
     def intervalIntersection(self, firstList: List[List[int]], secondList: List[List[int]]) -> List[List[int]]:
-        i = 0 
-        j = 0
-        if not firstList or not secondList:
-            return []
-        result = []
-        while i < len(firstList) and j < len(secondList):
-            intersect = []
-            startTime = max(firstList[i][0], secondList[j][0])
-            endTime = min(firstList[i][1], secondList[j][1])
-            if not endTime < startTime:
-                intersect.append(startTime)
-                intersect.append(endTime)
-                result.append(intersect)
-            if firstList[i][1] > secondList[j][1]:
-                j += 1
+        intersections = []
+        ptr1 = 0
+        ptr2 = 0
+        while ptr1 < len(firstList) and ptr2 < len(secondList):
+            first_start, first_end = firstList[ptr1]
+            second_start, second_end = secondList[ptr2]
+            if second_start <= first_end and first_start <= second_end:
+                intersections.append([max(first_start, second_start), min(first_end, second_end)])
+            if first_end < second_end:
+                ptr1 += 1
+            elif second_end < first_end:
+                ptr2 += 1
             else:
-                i += 1
-        return result
+                ptr1 += 1
+                ptr2 += 1
+        return intersections
     
 class Solution:
     def intervalIntersection(self, A: [[int]], B:[[int]]) -> [[int]]:
