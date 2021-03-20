@@ -1,3 +1,21 @@
+# Iterative
+class Solution:
+    def depthSum(self, nestedList: List[NestedInteger]) -> int:
+        if not nestedList:
+            return 0
+        stack = []
+        total = 0
+        for i, num in enumerate(nestedList):
+            stack.append((num, 1))
+        while stack:
+            num, depth = stack.pop()
+            if num.isInteger():
+                total += num.getInteger() * depth
+            else:
+                for i, val in enumerate(num.getList()):
+                    stack.append((val, depth + 1))
+        return total
+    
 class Solution:
     def depthSum(self, nestedList: List[NestedInteger]) -> int:
         if not nestedList:
