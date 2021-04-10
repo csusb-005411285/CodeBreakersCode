@@ -1,3 +1,33 @@
+#Concise
+class Solution:
+    def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
+        adj_list = defaultdict(list)
+        email_map = defaultdict(str)
+        visited = set()
+        merged_accounts = defaultdict(list)
+        for i, account in enumerate(accounts):
+            for j, email in enumerate(account[1:], start = 1): 
+                email_map[email] = account[0]
+                for k in range(1, len(account)):
+                    adj_list[email].append(account[k])
+        for i, account in enumerate(accounts):
+            for j, email in enumerate(account[1:], start = 1):
+                if email not in visited:
+                    merged_accounts[email] = self._accounts_merge(adj_list, visited, email, [])
+        for key, value in merged_accounts.items():
+            merged_accounts[key].sort()
+            merged_accounts[key].insert(0, email_map[key])
+        return merged_accounts.values()
+    
+    def _accounts_merge(self, adj_list, visited, email, path):
+        if email in visited:
+            return path
+        visited.add(email)
+        path.append(email)
+        for neigh in adj_list[email]:
+            self._accounts_merge(adj_list, visited, neigh, path)
+        return path
+    
 # Recursive
 class Solution:
     def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
