@@ -6,19 +6,15 @@ class Solution:
             src, dest = edge
             adj_list[src].append(dest)
             adj_list[dest].append(src)
-        min_time = self._min_time(adj_list, hasApple, visited, 0) - 2
-        return max(0, min_time)
+        return max(0, self._min_time(adj_list, visited, hasApple, 0) - 2)
     
-    def _min_time(self, adj_list, hasApple, visited, vert):
+    def _min_time(self, adj_list, visited, hasApple, vert):
         if vert in visited:
             return 0
         visited.add(vert)
         time = 0
         for neigh in adj_list[vert]:
-            time += self._min_time(adj_list, hasApple, visited, neigh)
-        if time:
+            time += self._min_time(adj_list, visited, hasApple, neigh)
+        if hasApple[vert] or time > 0:
             time += 2
-        else:
-            time = 2 if hasApple[vert] else 0
-        #print(vert, time)
         return time
