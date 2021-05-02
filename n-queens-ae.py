@@ -1,48 +1,38 @@
-# tc: o(n2), sc: o(n)
 class Solution:
-
-    def solveNQueens(self, n: int) -> [str]:
-        positions = {}
-        board = []
-        self.solve_n_queens_helper(n, 0, positions)
-        board = self.format_output(positions, n)
-        return board 
+    def __init__(self):
+        self.queens = []
+        
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        self._solve_n_queens(n, 0, [])
+        boards = self.construct_boards(n)
+        return boards
     
-    def solve_n_queens_helper(self, n, row, positions):
-        if row == n:
-            return True
-
-        for col in range(n): #n
-            if self.is_valid_position(row, col, positions):
-                positions[row] = [row, col]
-                if self.solve_n_queens_helper(n, row + 1, positions): #n
-                    return True
-
-        return False
+    def _solve_n_queens(self, n, row, queens):
+        if n == row:
+            self.queens.append(queens)
+            return
+        for col in range(n):
+            if self.can_place(row, col, queens):
+                self._solve_n_queens(n, row + 1, queens + [col])
+        return
     
-    def is_valid_position(self, row, col, positions):
-        for i in range(row): #n
-            queen_pos_row, queen_pos_col = positions[i]
-            if col == queen_pos_col or row + col == queen_pos_row + queen_pos_col or queen_pos_row - queen_pos_col == row - col:
+    def can_place(self, row, col, queens):
+        for r, c in enumerate(queens):
+            if col == c or row - r == abs(col - c):
                 return False
         return True
-
-    def format_output(self, positions, n):
-        result = [["." for _ in range(n)] for _ in range(n)]
-        formatted_res = []
-        for position in positions:
-            row, col = positions[position] 
-            result[row][col] = "Q"
-
-        for row in range(n): 
-          col_str = ""
-          for col in range(n): 
-            col_str += result[row][col]
-          formatted_res.append(col_str)
-        return formatted_res
-
-"""
-[0, 0]  [0, 1] [0, 2]
-[1, 0]  [1, 1] [1, 2]
-[2, 0]  [2, 1] [2, 2]
-"""
+    
+    def construct_boards(self, n):
+        boards = []
+        for row in self.queens:
+            board = []
+            for r, c in enumerate(row):
+                row = []
+                for i in range(n):
+                    if i == c:
+                        row.append('Q')
+                    else:
+                        row.append('.')
+                board.append(''.join(row))
+            boards.append(board)
+        return boards
