@@ -1,29 +1,27 @@
 class Solution:
-    def __init__(self):
-        self.inorder = []
-        
     def balanceBST(self, root: TreeNode) -> TreeNode:
-        self.get_inorder_traversal(root)
-        return self.convert_list_tree(self.inorder)
+        inorder = []
+        self.get_inorder_traversal(root, inorder)
+        return self.build_tree(inorder, 0, len(inorder) - 1)
     
-    def get_inorder_traversal(self, node):
-        if node and not node.left and not node.right:
-            self.inorder.append(node.val)
-            return
-        if node.left:
-            self.get_inorder_traversal(node.left)
-        self.inorder.append(node.val)
-        if node.right:
-            self.get_inorder_traversal(node.right)
-        return
-    
-    def convert_list_tree(self, node_list):
-        if not node_list:
+    def get_inorder_traversal(self, node, inorder):
+        stack = []
+        while True:
+            while node:
+                stack.append(node)
+                node = node.left
+            if not stack:
+                return inorder
+            last_node = stack.pop()
+            inorder.append(last_node.val)
+            node = last_node.right
+                
+    def build_tree(self, inorder, left, right):
+        if left > right:
             return None
-        left = 0
-        right = len(node_list) - 1
         mid = left + (right - left)//2
-        node = TreeNode(node_list[mid])
-        node.left = self.convert_list_tree(node_list[:mid])
-        node.right = self.convert_list_tree(node_list[mid + 1:])
+        node_val = inorder[mid]
+        node = TreeNode(node_val)
+        node.left = self.build_tree(inorder, left, mid - 1)
+        node.right = self.build_tree(inorder, mid + 1, right)
         return node
