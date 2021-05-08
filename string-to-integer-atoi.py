@@ -1,3 +1,25 @@
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        res = 0
+        i = 0
+        is_negative = False
+        s = s.strip()
+        if len(s) == 0 or (len(s) == 1 and not s[0].isdigit()):
+            return 0
+        if s[i] == '-' or s[i] == '+':
+            if s[i] == '-':
+                is_negative = True
+            i += 1
+        while i < len(s) and s[i].isdigit():
+            res = res * 10 + (ord(s[i]) - ord('0'))
+            i += 1
+        res = -res if is_negative else res
+        if res < pow(-2, 31):
+            return pow(-2, 31)
+        if res > pow(2, 31) - 1:
+            return pow(2, 31) - 1
+        return res
+
 # tc: o(n), sc: o(n)
 class Solution:
     def myAtoi(self, s: str) -> int:
