@@ -1,4 +1,19 @@
 class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        if not s:
+            return 0
+        char_map = defaultdict(int)
+        substr = 1
+        last_index = 0
+        for i, char in enumerate(s):
+            if char in char_map and last_index <= char_map[char]:
+                # exclude the previously seen char as it is included in the current index.
+                last_index = char_map[char] + 1 
+            substr = max(substr, i - last_index + 1)
+            char_map[char] = i
+        return substr
+      
+class Solution:
   def lengthOfLongestSubstring(self, s: str) -> int:
     if len(s) == 0:
       return 0
