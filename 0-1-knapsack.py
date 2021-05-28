@@ -37,17 +37,13 @@ class Solution:
 # bottom-up
 class Solution:
     def solve(self, weights, values, capacity):
-        cache = [[-1 for _ in range(capacity + 1)] for _ in range(len(weights))]
-        return self._solve(weights, values, capacity, 0, cache)
-
-    def _solve(self, weights, values, capacity, i, cache):
-        if i >= len(weights) or capacity <= 0:
-            return 0
-        if cache[i][capacity] != -1:
-            return cache[i][capacity]
-        profit1 = 0
-        if weights[i] <= capacity:
-            profit1 = values[i] + self._solve(weights, values, capacity - weights[i], i + 1, cache)
-        profit2 = self._solve(weights, values, capacity, i + 1, cache)
-        cache[i][capacity] = max(profit1, profit2) 
-        return cache[i][capacity]
+        cache = [[0 for _ in range(capacity + 1)] for _ in range(len(weights) + 1)]
+        cache[0][0] = 0
+        for row in range(1, len(cache)):
+            for col in range(1, len(cache[0])):
+                exclude = cache[row - 1][col]
+                include = 0
+                if weights[row - 1] <= col:
+                    include = values[row - 1] + cache[row - 1][col - weights[row - 1]]
+                cache[row][col] = max(include, exclude)
+        return cache[-1][-1]
