@@ -1,3 +1,20 @@
+# without memoization
+class Solution:
+    def solve(self, weights, values, capacity):
+        return self._solve(weights, values, capacity, 0)
+
+    def _solve(self, weights, values, capacity, i):
+        if i >= len(weights):
+            return 0
+        if capacity < 0:
+            return 0
+        include = 0
+        if capacity >= weights[i]:
+            include = values[i] + self._solve(weights, values, capacity - weights[i], i + 1)
+        exclude = self._solve(weights, values, capacity, i + 1)
+        return max(include, exclude)
+
+# bottom-up
 class Solution:
     def solve(self, weights, values, capacity):
         cache = [[-1 for _ in range(capacity + 1)] for _ in range(len(weights))]
