@@ -13,6 +13,26 @@ class Solution:
             include = values[i] + self._solve(weights, values, capacity - weights[i], i + 1)
         exclude = self._solve(weights, values, capacity, i + 1)
         return max(include, exclude)
+    
+# top-down
+class Solution:
+    def solve(self, weights, values, capacity):
+        cache = {}
+        return self._solve(weights, values, capacity, 0, cache)
+
+    def _solve(self, weights, values, capacity, i, cache):
+        if (i, capacity) in cache:
+            return cache[(i, capacity)]
+        if i >= len(weights):
+            return 0
+        if capacity < 0:
+            return 0
+        include = 0
+        if capacity >= weights[i]:
+            include = values[i] + self._solve(weights, values, capacity - weights[i], i + 1, cache)
+        exclude = self._solve(weights, values, capacity, i + 1, cache)
+        cache[(i, capacity)] = max(include, exclude)
+        return max(include, exclude)
 
 # bottom-up
 class Solution:
