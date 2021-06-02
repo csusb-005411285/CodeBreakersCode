@@ -11,6 +11,20 @@ def _count_change(denominations, total, i):
   exclude = _count_change(denominations, total, i + 1)
   return include + exclude
 
+
+# Bottom-up
+def count_change(denominations, total):
+  cache = [[0 for _ in range(total + 1)] for _ in range(len(denominations) + 1)]
+  cache[0][0] = 1
+  for row in range(len(cache)):
+    cache[row][0] = 1
+  for row in range(1, len(cache)):
+    for col in range(1, len(cache[0])):
+      cache[row][col] = cache[row - 1][col]
+      if denominations[row - 1] <= col:
+        cache[row][col] += cache[row][col - denominations[row - 1]]
+  return cache[-1][-1]
+
 class Solution:
     def coinChange(self, coins: [int], amount: int) -> int:
         # initialize a list of size amount + 1 [float('inf'), float('inf'), ...]
