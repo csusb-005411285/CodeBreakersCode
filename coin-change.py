@@ -1,3 +1,16 @@
+# brute force
+def count_change(denominations, total):
+  return _count_change(denominations, total, 0)
+
+def _count_change(denominations, total, i):
+  if total == 0:
+    return 1
+  if i >= len(denominations) or total < 0:
+    return 0
+  include = _count_change(denominations, total - denominations[i], i)
+  exclude = _count_change(denominations, total, i + 1)
+  return include + exclude
+
 class Solution:
     def coinChange(self, coins: [int], amount: int) -> int:
         # initialize a list of size amount + 1 [float('inf'), float('inf'), ...]
