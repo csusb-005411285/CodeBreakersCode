@@ -11,6 +11,23 @@ def _count_change(denominations, total, i):
   exclude = _count_change(denominations, total, i + 1)
   return include + exclude
 
+# top-down
+ def change(amount: int, coins: List[int]) -> int:
+        return _change(amount, coins, 0, defaultdict(int))
+    
+    def _change(amt, coins, i, cache):
+        if (i, amt) in cache:
+            return cache[(i, amt)]
+        if amt == 0:
+            return 1
+        if i == len(coins) or amt < 0:
+            return 0
+        # 0
+        # 1
+        include = _change(amt - coins[i], coins, i, cache)
+        exclude = _change(amt, coins, i + 1, cache)
+        cache[(i, amt)] = include + exclude 
+        return include + exclude
 
 # Bottom-up
 def count_change(denominations, total):
