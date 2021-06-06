@@ -28,3 +28,15 @@ def count_change(denominations, total):
         if cache[row][col - denominations[row - 1]] != float('inf'):
           cache[row][col] = min(cache[row][col], 1 + cache[row][col - denominations[row - 1]])
   return cache[-1][-1] if cache[-1][-1] != float('inf') else -1
+
+# alernate bottom-up
+def count_change(self, denominations, total):
+    cache = [[float('inf') for _ in range((total + 1))] for _ in range(len(denominations) + 1)]
+    for row in range(len(cache)):
+        cache[row][0] = 0
+    for row in range(1, len(cache)):
+        for col in range(1, len(cache[0])):
+            cache[row][col] = cache[row - 1][col]
+            if col >= denominations[row - 1] and cache[row][col - denominations[row - 1]] != float('inf'):
+                cache[row][col] = min(cache[row][col], cache[row][col - denominations[row - 1]] + 1)
+    return cache[-1][-1] if cache[-1][-1] != float('inf') else -1
