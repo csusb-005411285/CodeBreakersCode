@@ -1,4 +1,7 @@
 #Educative
+def count_ways(n):
+  return _count_ways(n)
+
 def _count_ways(n):
   if n == 0:
     return 1
@@ -7,7 +10,6 @@ def _count_ways(n):
   if n == 2:
     return 2
   return _count_ways(n - 3) + _count_ways(n - 2) + _count_ways(n - 1)
-
 
 def count_ways(n):
   cache = [0 for _ in range(n + 1)]
