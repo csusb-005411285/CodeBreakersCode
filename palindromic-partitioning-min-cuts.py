@@ -1,3 +1,27 @@
+# brute force
+class Solution:
+    def minCut(self, s: str) -> int:
+        return self._partition(s, 0, len(s) - 1)
+        
+    def _partition(self, s, start, end):
+        if start > end:
+            return 0
+        if self.is_palindrome(s, start, end):
+            return 0
+        min_cuts = end - start
+        for i in range(start, end + 1):
+            if self.is_palindrome(s, start, i):
+                min_cuts = min(min_cuts, 1 + self._partition(s, i + 1, end))
+        return min_cuts
+    
+    def is_palindrome(self, s, start, end):
+        while start <= end:
+            if s[start] != s[end]:
+                return False
+            start += 1
+            end -= 1
+        return True
+    
 def palindromePartitioningMinCuts(string):
     # build the 2d matrix of palindromic substring
     is_pal = [[False for col in range(len(string))] for row in range(len(string))]
