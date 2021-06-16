@@ -1,22 +1,13 @@
 class Solution:
     def checkPossibility(self, nums: List[int]) -> bool:
-        if len(nums) <= 2:
-            return True
-
         count = 0
-
-
-        for i in range(len(nums) - 1): # 4
-            if nums[i] > nums[i + 1]: # 4 < 3
-
-                if i - 1 < 0 or nums[i - 1] <= nums[i + 1]: 
-                    nums[i] = nums[i + 1]
-                else:
-                    nums[i + 1] = nums[i]
-            
-                count += 1 # 1
-                
-                if count > 1:
+        arr = nums
+        for i in range(len(arr) - 1):
+            num = arr[i]
+            if arr[i] > arr[i + 1]:
+                count += 1
+                if i - 1 >= 0 and i + 2 < len(arr) and arr[i - 1] > arr[i + 1] and arr[i] > arr[i + 2]:
                     return False
-        
+            if count > 1:
+                return False
         return True
