@@ -1,3 +1,18 @@
+# nlogn solution
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        res = []
+        for i, num in enumerate(nums):
+            if not res:
+                res.append(num)
+                continue
+            index = bisect_left(res, num)
+            if index >= len(res):
+                res.append(num)
+            else:
+                res[index] = num
+        return len(res)
+
 # leetcode
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
