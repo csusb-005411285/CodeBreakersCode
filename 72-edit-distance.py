@@ -1,26 +1,34 @@
-class Solution:
-    def minDistance(self, word1: str, word2: str) -> int:
-        if not word1 and not word2:
-            return 0
+def find_min_operations(s1, s2):
+  return _find_min_operations(s1, s2, 0, 0)
 
-        if not word1:
-            return len(word2)
-        
-        if not word2:
-            return len(word1)
-        
-        mat = [[0 for _ in range(len(word1) + 1)] for _ in range(len(word2) + 1)] 
+def _find_min_operations(s1, s2, i, j):
+  if i >= len(s1) and j >= len(s2):
+    return 0
+  if i >= len(s1) and j < len(s2):
+    return len(s2) - j
+  if i < len(s1) and j >= len(s2):
+    return len(s1) - i    
+  if s1[i] == s2[j]:
+    return _find_min_operations(s1, s2, i + 1, j + 1)
+  insert = _find_min_operations(s1, s2, i, j + 1)
+  delete = _find_min_operations(s1, s2, i + 1, j)
+  replace = _find_min_operations(s1, s2, i + 1, j + 1)
+  return 1 + min(insert, delete, replace)
 
-        for r in range(len(word2) + 1): 
-            for c in range(len(word1) + 1):
-                if r == 0:
-                    mat[0][c] = c
-                elif c == 0:
-                    mat[r][0] = r
-                else:
-                    if word1[c - 1] == word2[r - 1]:
-                        mat[r][c] = mat[r - 1][c - 1] 
-                    else:
-                        mat[r][c] = min(mat[r - 1][c], mat[r][c - 1], mat[r - 1][c - 1]) + 1
-
-        return mat[-1][-1]
+# bottom-up
+def find_min_operations(s1, s2):
+  cache = [[0 for _ in range(len(s2) + 1)] for _ in range(len(s1) + 1)]
+  for row in range(len(cache)):
+    cache[row][0] = row
+  for col in range(len(cache[0])):
+    cache[0][col] = col
+  for row in range(1, len(cache)):
+    for col in range(1, len(cache[0])):
+      if s1[row - 1] == s2[col - 1]:
+        cache[row][col] = cache[row - 1][col - 1]
+      else:
+        insert = cache[row][col - 1]
+        delete = cache[row - 1][col]
+        replace = cache[row - 1][col - 1]
+        cache[row][col] = 1 + min(insert, delete, replace)
+  return cache[-1][-1]
