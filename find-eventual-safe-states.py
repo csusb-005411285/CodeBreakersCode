@@ -1,37 +1,30 @@
 class Solution:
   def eventualSafeNodes(self, graph: [[int]]) -> [int]:
         adj_list = defaultdict(list)
-        vertices_with_no_outgoing_edges = []
-        stack = deque()
-        outdegree_graph = defaultdict(int) 
-        no_of_vertices = len(graph)
-
-        for i in range(no_of_vertices):
-            outdegree_graph[i] = 0
-
-        for source in range(no_of_vertices):
-            for dest in graph[source]:
-                adj_list[dest].append(source) 
-                outdegree_graph[source] += 1
-
-        for key, val in outdegree_graph.items():
-            if outdegree_graph[key] == 0:
+        outdegree = defaultdict(int)
+        nodes = []
+        stack = []
+        for i in range(len(graph)):
+            outdegree[i] = 0
+        # build adj list and outdegree list
+        for src, vertices in enumerate(graph):
+            for i, dest in enumerate(vertices):
+                adj_list[dest].append(src)
+                outdegree[src] += 1
+        # get all the nodes that have no outgoing edges
+        for key, value in outdegree.items():
+            if value == 0:
                 stack.append(key)
-                vertices_with_no_outgoing_edges.append(key)
-
+        # perform topological sort
         while stack:
-            vert = stack.pop()
-
-            if vert in adj_list:
-                for v in adj_list[vert]:
-                    outdegree_graph[v] -= 1
-                
-                    if outdegree_graph[v] == 0:
-                        vertices_with_no_outgoing_edges.append(v)
-                        stack.append(v)
-
-        return sorted(vertices_with_no_outgoing_edges) 
-
+            node = stack.pop()
+            nodes.append(node)
+            for neigh in adj_list[node]:
+                outdegree[neigh] -= 1
+                if outdegree[neigh] == 0:
+                    stack.append(neigh)
+        # reverse the result and return
+        return sorted(nodes)
 # DFS
 class Solution:
     def eventualSafeNodes(self, graph: List[List[int]]) -> List[int]: 
