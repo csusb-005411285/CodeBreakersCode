@@ -1,3 +1,72 @@
+# top-down
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        res = self._coin_change(coins, amount, 0)
+        return res if res != float('inf') else -1 
+    
+    def _coin_change(self, coins, amt, i):
+        if i >= len(coins) or amt < 0:
+            return float('inf')
+        if amt == 0:
+            return 0
+        include = float('inf')
+        if amt >= coins[i]:
+            include = 1 + self._coin_change(coins, amt - coins[i], i)
+        exclude = self._coin_change(coins, amt, i + 1)
+        return min(include, exclude)
+
+# top-down
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        res = self._coin_change(coins, amount, 0, 0)
+        return res if res != float('inf') else -1 
+    
+    def _coin_change(self, coins, amt, i, count):
+        if i >= len(coins) or amt < 0:
+            return float('inf')
+        if amt == 0:
+            return count
+        include = float('inf')
+        if amt >= coins[i]:
+            include = self._coin_change(coins, amt - coins[i], i, count + 1)
+        exclude = self._coin_change(coins, amt, i + 1, count)
+        return min(include, exclude)
+
+ # top-down with caching     
+ class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        cache = defaultdict(int)
+        res = self._coin_change(coins, amount, 0, cache)
+        return res if res != float('inf') else -1
+    
+    def _coin_change(self, coins, amt, i, cache):
+        if (amt, i) in cache:
+            return cache[(amt, i)]
+        if amt == 0:
+            return 0
+        if amt < 0 or i >= len(coins):
+            return float('inf')
+        include = float('inf')
+        if amt >= coins[i]:
+            include = 1 + self._coin_change(coins, amt - coins[i], i, cache)
+        exclude = self._coin_change(coins, amt, i + 1, cache)
+        cache[(amt, i)] = min(include, exclude)
+        return min(include, exclude)
+
+# bottom-up with memoization
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        cache = [[float('inf') for _ in range(amount + 1)] for _ in range(len(coins) + 1)]
+        cache[0][0] = 0
+        for row in range(len(cache)):
+            cache[row][0] = 0
+        for row in range(1, len(cache)):
+            for col in range(1, len(cache[0])):
+                cache[row][col] = cache[row - 1][col]
+                if col >= coins[row - 1] and cache[row][col - coins[row - 1]] != float('inf'):
+                    cache[row][col] = min(cache[row][col], cache[row][col - coins[row - 1]] + 1)
+        return cache[-1][-1] if cache[-1][-1] != float('inf') else -1       
+
 # brute force
 def count_change(denominations, total):
   return _count_change(denominations, total, 0)
