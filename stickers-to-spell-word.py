@@ -23,7 +23,7 @@ class Solution:
             if target[i] in sticker:
                 for s in sticker:
                     sticker_map[s] += 1
-                self._min_stickers(stickers, target, char_map, used + 1, i + 1, res, sticker_map)
+                self._min_stickers(stickers, target, char_map, used + 1, i, res, sticker_map)
                 for s in sticker:
                     sticker_map[s] -= 1
         return
