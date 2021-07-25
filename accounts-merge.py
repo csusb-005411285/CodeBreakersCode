@@ -1,32 +1,54 @@
 #Concise
 class Solution:
     def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
+        email_name = defaultdict(str)
         adj_list = defaultdict(list)
-        email_map = defaultdict(str)
+        res = []
         visited = set()
-        merged_accounts = defaultdict(list)
-        for i, account in enumerate(accounts):
-            for j, email in enumerate(account[1:], start = 1): 
-                email_map[email] = account[0]
-                for k in range(1, len(account)):
-                    adj_list[email].append(account[k])
-        for i, account in enumerate(accounts):
-            for j, email in enumerate(account[1:], start = 1):
-                if email not in visited:
-                    merged_accounts[email] = self._accounts_merge(adj_list, visited, email, [])
-        for key, value in merged_accounts.items():
-            merged_accounts[key].sort()
-            merged_accounts[key].insert(0, email_map[key])
-        return merged_accounts.values()
+        # build graph
+        # loop through accounts
+        for acct in accounts:
+            name = acct[0]
+            for val in acct[1:]:
+                # connect first email to all other emails
+                adj_list[acct[1]].append(val)
+                # connect all emails to the first email
+                adj_list[val].append(acct[1])
+                # update email_name map
+                email_name[val] = name
+            
+        # perform dfs
+        # loop through graph
+        for src, dest in adj_list.items():
+            # if vert is not visited
+            if src not in visited:
+                # perform dfs
+                components = self.get_connected_components(adj_list, src, visited)
+                
+                # build the result
+                # sort the result
+                components.sort()
+                # add name as the first entry in the list
+                components.insert(0, email_name[components[0]])
+                # add to res
+                res.append(components)
+        return res
     
-    def _accounts_merge(self, adj_list, visited, email, path):
-        if email in visited:
-            return path
-        visited.add(email)
-        path.append(email)
-        for neigh in adj_list[email]:
-            self._accounts_merge(adj_list, visited, neigh, path)
-        return path
+    def get_connected_components(self, adj_list, vert, visited):
+        # if visited
+        if vert in visited:
+            return []
+        # add to visited
+        visited.add(vert)
+        components = [vert]
+        # get neighbors
+        for neigh in adj_list[vert]:
+            # call recursive method
+            nodes = self.get_connected_components(adj_list, neigh, visited)
+            # store results of recursive method
+            for node in nodes:
+                components.append(node)
+        return components
     
 # Recursive
 class Solution:
