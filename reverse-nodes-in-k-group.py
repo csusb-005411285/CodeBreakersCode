@@ -4,23 +4,35 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
-        dummy = jump = ListNode(-1)
-        dummy.next = l = r = head
+    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        # init vars
+        left = head
+        right = head
+        dummy = ListNode(float('inf'))
+        jump = dummy
+        # check invalid inputs
+        if k == 1 or not head.next:
+            return head
         while True:
             count = 0
-            while r and count < k:
-                r = r.next
+            # find k nodes to reverse
+            while right and count < k:
                 count += 1
+                right = right.next
             if count == k:
-                prev, curr = r, l
-                for _ in range(k):
+                # reverse nodes
+                prev = right # 2
+                curr = left
+                for i in range(k):
                     curr_next = curr.next
                     curr.next = prev
                     prev = curr
                     curr = curr_next
-                jump.next = prev
-                jump = l
-                l = r
+                # rearrange pointers
+                jump.next = prev # 1
+                jump = left
+                left = right
+            # if no more nodes to reverse
             else:
                 return dummy.next
+        return head
