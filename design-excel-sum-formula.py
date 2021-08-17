@@ -1,7 +1,7 @@
 class Excel:
 
     def __init__(self, height: int, width: str):
-        self.cells = [{letter: {"value": 0, "sum": None} for letter in string.ascii_uppercase} for h in range(height + 1)]
+        self.cells = [{letter: {"value": 0, "sum": None} for letter in string.ascii_uppercase} for h in range(height + 1)] # 4
 
     def set(self, row: int, column: str, val: int) -> None:
         # populate cell
@@ -39,9 +39,9 @@ class Excel:
             start_row, start_col = int(start[1:]), start[0] # 3
             end_row, end_col = int(end[1:]), end[0] # 3
             # loop rows
-            for row in range(start_row, end_row + 1):
+            for row in range(start_row, end_row + 1): # 4
                 # loop cols
-                for col in range(ord(start_col), ord(end_col) + 1):
+                for col in range(ord(start_col), ord(end_col) + 1): # 4
                     # populate dict
                     _map[(row, chr(col))] += 1
         return _map
@@ -61,5 +61,6 @@ class Excel:
 1. When we set a value, we always set the value to the 'value' property and set 'sum' to None regardless of whether 'sum' is set or not. 
 2. When we set the sum, set the 'value' property to 0 regardless of whether the 
 'value' was set earlier or not.
-3. When we calculate start and end row, always use start[1:] and end[1:] instead of start[1] and end[1] because if start = A12, then using start[1] will give us 1 instead of 12. 
+3. When we calculate start and end row, always use start[1:] and end[1:] instead of start[1] and end[1] because if start = A12, then using start[1] will give us 1 instead of 12.
+4. height + 1 because we are not using 0-index.
 '''
