@@ -40,3 +40,7 @@ class Solution:
             if 0 <= n_row < len(grid) and 0 <= n_col < len(grid[0]):
                 self.set_cells_to_stable(n_row, n_col, grid)
         
+'''
+1. If the cell had a brick and is stable, then get a count of all of its neighbors that are bricks and are not stable.
+2. -1 is because we do not count the initial coordinate in the hits list. 
+'''
