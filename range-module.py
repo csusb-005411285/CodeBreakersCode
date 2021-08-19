@@ -1,4 +1,5 @@
-
+class RangeModule:
+    
     def __init__(self):
         self.ranges = defaultdict(int)
 
