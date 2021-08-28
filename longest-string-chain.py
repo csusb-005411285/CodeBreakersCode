@@ -1,3 +1,42 @@
+# Top-down
+class Solution:
+    def longestStrChain(self, words: List[str]) -> int:
+        # init vars
+        len_longest_word_chain = 0
+        cache = defaultdict(int)
+        # initial checks
+        # sort words
+        words.sort(key = lambda x: -len(x))
+        # loop through all the words
+        for word in words:
+            # perform dfs
+            len_longest_word_chain = max(len_longest_word_chain, self.longest_str_chain(word, words, cache) + 1) # 1.
+        # return
+        return len_longest_word_chain if len_longest_word_chain != 0 else 1 # 2.
+    
+    def longest_str_chain(self, word, words, cache):
+        if word in cache:
+            return cache[word]
+        # base case
+        _max = 0
+        # loop through each char in the word
+        for i, char in enumerate(word):
+            # remove the char from word
+            new_word = word[:i] + word[i + 1:]
+            # if word is in the list of words
+            if new_word in words:
+                # perform dfs
+                _max = max(_max, self.longest_str_chain(new_word, words, cache) + 1)
+                # get max value
+        # return max value
+        cache[word] = _max
+        return _max
+    
+'''
+1. +1 is for the base case.
+2. smallest word chain can be of length 1.
+'''
+
 def longestStringChain(strings):
     if not strings:
         return []
