@@ -37,6 +37,30 @@ class Solution:
 2. smallest word chain can be of length 1.
 '''
 
+# Bottom-up
+class Solution:
+    def longestStrChain(self, words: List[str]) -> int:
+        # init vars
+        cache = defaultdict(int)
+        for word in words:
+            cache[word] = 1
+        longest_chain_len = 0
+        # initial checks
+        if len(words) == 1:
+            return 1
+        words.sort(key = lambda x: len(x))
+        # process
+        for word in words:
+            for i, char in enumerate(word):
+                new_word = word[:i] + word[i + 1:]
+                # check if the char is present in the cache
+                if new_word in cache:
+                    cache[word] = max(cache[word], cache[new_word] + 1)
+                    longest_chain_len = max(longest_chain_len, cache[word])
+            # if present store the max value in the cache
+        # return
+        return longest_chain_len if longest_chain_len != 0 else 1
+
 def longestStringChain(strings):
     if not strings:
         return []
