@@ -1,6 +1,35 @@
 class SnapshotArray:
 
     def __init__(self, length: int):
+        self.snaps = defaultdict(defaultdict)
+        self.snap_id = 0
+
+    def set(self, index: int, val: int) -> None:
+        # add value to snapshot dictionary with current snapshot id as key 
+        self.snaps[self.snap_id][index] = val
+        
+    def snap(self) -> int:
+        # increment snapshot id
+        self.snap_id += 1
+        # return previous snapshot id
+        return self.snap_id - 1
+
+    def get(self, index: int, snap_id: int) -> int:
+        #  get the value from the snap_id
+        curr_snap_id = snap_id
+        # if there is no value present in the snap_id, keep checking the previous snap_ids
+        # this happens when we call snap back to back
+        while curr_snap_id > 0 and index not in self.snaps[curr_snap_id]:
+            curr_snap_id -= 1
+        # return
+        return self.snaps[curr_snap_id][index] if index in self.snaps[curr_snap_id] else 0
+
+
+
+# Brute force
+class SnapshotArray:
+
+    def __init__(self, length: int):
         # init a hash map instead of list
         self.map = defaultdict(int)
         for i in range(length):
