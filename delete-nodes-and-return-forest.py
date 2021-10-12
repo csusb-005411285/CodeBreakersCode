@@ -1,39 +1,33 @@
 class Solution:
-    def __init__(self):
-        self.roots = []
-    
     def delNodes(self, root: TreeNode, to_delete: List[int]) -> List[TreeNode]:
+        roots = []
         to_delete_set = set(to_delete)
-        self.del_nodes(root, to_delete_set, True) # 1.
-        return self.roots
-    
-    def del_nodes(self, node, to_delete_set, parent_deleted):
+        self.delete_nodes(root, to_delete_set, roots)
+        if root.val not in to_delete_set:
+            roots.append(root)
+        return roots
+        
+    def delete_nodes(self, node, to_delete_set, roots):
         # base case
-        # check for Null node
+        # check for null
         if not node:
             return None
-        # if node to be deleted in to_delete set
-        if node.val in to_delete_set:
-            # move left
-            node.left = self.del_nodes(node.left, to_delete_set, True)
-            # move right
-            node.right = self.del_nodes(node.right, to_delete_set, True)
-            return None
-        # else
-            # check if parent is deleted
-        if parent_deleted:
-        # if parent deleted
-            # append node to result set
-            self.roots.append(node)
-            # if parent deleted or not deleted
-                # build tree
         # move left
-        node.left = self.del_nodes(node.left, to_delete_set, False)
+        left = self.delete_nodes(node.left, to_delete_set, roots)
         # move right
-        node.right = self.del_nodes(node.right, to_delete_set, False)
+        right = self.delete_nodes(node.right, to_delete_set, roots)
+        # add the left child 
+        node.left = left
+        # add the right child
+        node.right = right
+        # if node.val in set
+        if node.val in to_delete_set:    
+            # add children to result set
+            if node.left:
+                roots.append(node.left)
+            if node.right:
+                roots.append(node.right)
+            # return none
+            return None
         # return node
         return node
-    
-'''
-1. For root node assume the parent does not exist or the parent is deleted.
-'''
