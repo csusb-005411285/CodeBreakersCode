@@ -28,6 +28,28 @@ class Solution:
 2. the value of l has to be 0; not sure why it is this way. 
 '''
 
+# bottom-up solution. TLE.
+class Solution:
+    def checkRecord(self, n: int) -> int:
+        cache = [[[0 for _ in range(3)] for _ in range(2)] for _ in range(n + 1)] 
+        cache[0] = [[1, 1, 1], [1, 1, 1]]
+        modulo = pow(10, 9) + 7
+        for i in range(1, n + 1):
+            for j in range(2):
+                for k in range(3):
+                    val = cache[i - 1][j][2] % modulo
+                    if j > 0:
+                        val = (val + cache[i - 1][j - 1][2]) % modulo # 2.
+                    if k > 0:
+                        val = (val + cache[i - 1][j][k - 1]) % modulo # 3.
+                    cache[i][j][k] = val
+        return cache[n][1][2] # 1.
+'''
+1. Last row, last col, and last inner row
+2. to calculate a
+3. to calculate l
+'''
+
 public int checkRecord(int n) {
         int[][][] mem = new int[n][2][3];
         return dfs(0, 0, 0, n, mem);   
