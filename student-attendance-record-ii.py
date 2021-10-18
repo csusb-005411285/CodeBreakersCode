@@ -1,21 +1,32 @@
-def dfs(n, consecLate, hasA):
-    if n == 0:
-        return 1
-
-    tmp = 0
-    if not hasA:
-        tmp += dfs(n-1, 0, True) # adding A
-        tmp %= MOD
-    if consecLate < 2:
-        tmp += dfs(n-1, consecLate+1, hasA)  # adding L
-        tmp %=  MOD
-    tmp += dfs(n-1, 0, hasA) # adding P, for every case
-    tmp %= MOD 
-
-    return tmp
-
-MOD = 10**9+7
-return dfs(n, 0, False)
+class Solution:
+    def checkRecord(self, n: int) -> int:
+        cache = defaultdict(int)
+        return self._check_record(n, 0, 0, 0, 0, cache)
+    
+    def _check_record(self, n, a, l, p, i, cache):
+        if (i, a, l) in cache: # 1. 
+            return cache[(i, a, l)]
+        # base case
+        # if i equals n
+        if i == n:
+            return 1
+        modulo = pow(10, 9) + 7
+        # add p
+        count = self._check_record(n, a, 0, p + 1, i + 1, cache) # 2.
+        # add a
+        if a < 1:
+            count += self._check_record(n, 1, 0, p, i + 1, cache) # 2.
+        # add l
+        if l < 2:
+            count += self._check_record(n, a, l + 1, p, i + 1, cache)
+        # return sum of three calls
+        cache[(i, a, l)] = count % modulo
+        return cache[(i, a, l)]
+    
+'''
+1. cache should only have a, i, l as these three variables are bounded by a condition. Adding 'p' to it will result in an error.
+2. the value of l has to be 0; not sure why it is this way. 
+'''
 
 public int checkRecord(int n) {
         int[][][] mem = new int[n][2][3];
