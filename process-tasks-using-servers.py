@@ -1,3 +1,33 @@
+# A correct solution that TLEs.
+# This solution is easier to understand, but does not pass all test case; it is correct but TLEs at larger edge cases.
+class Solution:
+    def assignTasks(self, servers: List[int], tasks: List[int]) -> List[int]:
+        free_heap = []
+        busy_heap = []
+        ans = []
+        timer = 0
+        curr_index = 0
+        queue = deque()
+        for idx, weight in enumerate(servers):
+            heappush(free_heap, (weight, idx))
+        while len(ans) != len(tasks):
+            while curr_index <= timer and curr_index < len(tasks):
+                queue.append((curr_index, tasks[curr_index]))
+                curr_index += 1
+            while busy_heap and busy_heap[0][0] <= timer:
+                _, server_weight, server_id = heappop(busy_heap)
+                heappush(free_heap, (server_weight, server_id))
+            while not queue and busy_heap:
+                timer = busy_heap[0][0]
+                continue
+            while queue and free_heap:
+                server_weight, server_id = heappop(free_heap)
+                task_id, task_time = queue.popleft()
+                heappush(busy_heap, (timer + task_time, server_weight, server_id))
+                ans.append(server_id)
+            timer += 1
+        return ans
+
 class Solution:
     def assignTasks(self, servers: List[int], tasks: List[int]) -> List[int]:
         # a heap to hold the servers 
