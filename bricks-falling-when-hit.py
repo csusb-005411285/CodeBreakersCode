@@ -38,7 +38,9 @@ class Solution:
         # we ignore cells that are to be deleted later or is empty or is stable.
         if grid[row][col] != 1:
             return 0
-        # mark cell as stable or visited.
+        # mark cell as stable.
+        # Why?
+        # So that we do not delete the same cell again.
         grid[row][col] = 2
         count = 1
         for n_row, n_col in [(row + 1, col), (row - 1, col), (row, col + 1), (row, col - 1)]:
