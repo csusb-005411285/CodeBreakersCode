@@ -12,7 +12,7 @@ class Solution:
     
     def split(self, start, end):
         # base case. Check if end is before start
-        if start >= end:
+        if end >= end: # 2.
             return
         # calculate the mid
         mid = start + (end - start)//2
@@ -32,7 +32,7 @@ class Solution:
         res = []
         # perform merge sort
         # while loop
-        while left <= mid and right <= end:
+        while left <= mid and right <= end: # 3.
             # if left number is smaller than the right
             if self.nums[left][1] <= self.nums[right][1]:
                 index = self.nums[left][0]
@@ -52,16 +52,21 @@ class Solution:
                 right += 1
         # parse remaining elements
         # parse left pointer
-        while left <= mid:
+        while left <= mid: # 3.
             index = self.nums[left][0]
             self.counts[index] += count
             res.append(self.nums[left])
             left += 1
         # parse right pointer
-        while right <= end:
+        while right <= end: # 3.
             res.append(self.nums[right])
             right += 1
         # merge elements
-        self.nums[start: end + 1] = res
+        self.nums[start: end + 1] = res # 1.
         return
                 
+'''
+1. This has to be equal to start and end; and not left and right. 
+2. It has to be <= and not <.
+3. It has to be <= and not <.
+'''
