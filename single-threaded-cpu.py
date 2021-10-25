@@ -1,3 +1,48 @@
+# Alternate solution
+class Solution:
+    def getOrder(self, tasks: List[List[int]]) -> List[int]:
+        # init vars
+        # heap
+        heap = []
+        # timer
+        timer = 0
+        # order of tasks
+        order = []
+        i = 0
+        # initial checks
+        
+        # process
+        # sort tasks by enque time
+        for j, task in enumerate(tasks):
+            task.append(j)
+        sorted_tasks = sorted(tasks, key = lambda x: x[0])
+        # set timer to first task
+        timer = sorted_tasks[0][0] 
+        # loop through sorted tasks
+        while i < len(sorted_tasks): 
+            # while timer equals the enque time
+            while i < len(sorted_tasks) and timer >= sorted_tasks[i][0]: 
+                # add to heap
+                # add a tuple of processing time and index
+                heappush(heap, (sorted_tasks[i][1], sorted_tasks[i][2])) 
+                i += 1
+            # while heap has elements
+            if heap: 
+                # remove
+                time, index = heappop(heap) 
+                # add to final result, add index
+                order.append(index) 
+                # increment timer
+                timer += time 
+            else:
+                timer = sorted_tasks[i][0]
+        while heap:
+            time, index = heappop(heap) 
+            # add to final result, add index
+            order.append(index) 
+        # return order
+        return order
+
 class Solution:
     def getOrder(self, tasks: List[List[int]]) -> List[int]:
         # init vars
