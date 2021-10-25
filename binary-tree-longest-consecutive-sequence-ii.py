@@ -1,5 +1,48 @@
 class Solution:
     def __init__(self):
+        self.max_path = 0
+    
+    def longestConsecutive(self, root: Optional[TreeNode]) -> int:
+        self.get_longest_path(root)
+        return self.max_path
+
+    def get_longest_path(self, node):
+        # base case, check for null node
+        if not node: # 1.
+            return [0, 0]
+        # init variables
+        # incr, decr
+        incr = decr = 0
+        # move left
+        if node.left: # 
+            left_incr, left_decr = self.get_longest_path(node.left) # [1, 1]
+            # if current node + 1 == left child
+            if node.val == node.left.val - 1:
+                # set decr
+                decr = max(decr, left_decr + 1) 
+            # if current node - 1 == left child
+            if node.val == node.left.val + 1:    
+                # set incr
+                incr = max(incr, left_incr + 1) # 2
+        # move right
+        if node.right:
+            right_incr, right_decr = self.get_longest_path(node.right) # [1, 1]
+            # if current node + 1 == right child
+            if node.val == node.right.val - 1:    
+                # set decr
+                decr = max(decr, right_decr + 1)
+            # if current node - 1 == right child
+            if node.val == node.right.val + 1:    
+                # set incr
+                incr = max(incr, right_incr + 1)
+        # set the max. value
+        # the max. value would be a comparison between two paths and combination of both paths
+        self.max_path = max(self.max_path, incr + decr - 1, incr, decr) # 3, 2, 0
+        #return the max between two returned incr and decr
+        return [incr, decr] #
+
+class Solution:
+    def __init__(self):
         self.longest_path_len = 0
     
     def longestConsecutive(self, root: Optional[TreeNode]) -> int:
