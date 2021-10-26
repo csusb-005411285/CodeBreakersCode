@@ -1,3 +1,17 @@
+# Brute force
+class Solution:
+    def countSmaller(self, nums: List[int]) -> List[int]:
+        result = [0 for _ in range(len(nums))]
+        nums_list = list(enumerate(nums))
+        nums_list.sort(key = lambda x: -x[1])
+        for i in range(len(nums_list)):
+            for j in range(i + 1, len(nums_list)):
+                if nums_list[i][1] > nums_list[j][1] and nums_list[i][0] < nums_list[j][0]:
+                    index = nums_list[i][0]
+                    result[index] = result[index] + 1 if result[index] != -1 else 1
+        return result
+
+# Merge sort
 class Solution:
     def __init__(self):
         self.nums = []
