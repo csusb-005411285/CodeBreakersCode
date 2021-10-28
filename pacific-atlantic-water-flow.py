@@ -1,3 +1,63 @@
+class Solution: 
+
+    def pacificAtlantic(self, matrix: List[List[int]]) -> List[List[int]]: 
+
+        if not matrix or not matrix[0]: 
+
+            return [] 
+
+        neighbors = [[0,1],[0,-1],[1,0],[-1,0]] 
+
+        pacific = [[0 for j in range(len(matrix[0]))] for i in range(len(matrix))] 
+
+        atlantic = [[0 for j in range(len(matrix[0]))] for i in range(len(matrix))] 
+
+         
+
+        def dfs(i, j, ocean): 
+
+            ocean[i][j] = 1 
+
+            for x, y in neighbors: 
+
+                x += i 
+
+                y += j 
+
+                if 0 <= x < len(matrix) and 0 <= y < len(matrix[0]) and matrix[i][j] <= matrix[x][y] and ocean[x][y] == 0: 
+
+                    dfs(x, y, ocean) 
+
+                     
+
+        for i in range(len(matrix)): 
+
+            dfs(i, 0, pacific) 
+
+            dfs(i, len(matrix[0]) - 1, atlantic) 
+
+        for j in range(len(matrix[0])): 
+
+            dfs(0, j, pacific) 
+
+            dfs(len(matrix) - 1, j, atlantic) 
+
+         
+
+        ans = [] 
+
+        for i in range(len(matrix)): 
+
+            for j in range(len(matrix[0])): 
+
+                if pacific[i][j] and atlantic[i][j]: 
+
+                    ans.append([i,j]) 
+
+                     
+
+        return ans 
+
 class Solution:
     def pacificAtlantic(self, matrix: List[List[int]]) -> List[List[int]]:
         cells_pacific_ocean = []
