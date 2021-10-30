@@ -1,3 +1,54 @@
+# Easier to understand
+class Solution:
+    def __init__(self):
+        self.max_path = 1 # 3.
+    
+    def longestConsecutive(self, root: Optional[TreeNode]) -> int:
+        self._longest_consecutive(root)
+        # check for no nodes
+        return self.max_path
+    
+    def _longest_consecutive(self, node):
+        # base case. check for leaf node
+        if not node.left and not node.right:
+            return [1, 1]
+        # init vars
+        left_incr = left_decr = right_incr = right_decr = 1 # 1.
+        # move left
+        if node.left:
+            left_consec_incr, left_consec_decr = self._longest_consecutive(node.left)
+        # move right
+        if node.right:
+            right_consec_incr, right_consec_decr = self._longest_consecutive(node.right)
+        # if left child greater than 1
+        if node.left and node.left.val + 1 == node.val:
+            # add 1 to incr 
+            left_incr += left_consec_incr
+        # if left child is less than 1
+        if node.left and node.left.val - 1 == node.val:
+            # add 1 to decr
+            left_decr += left_consec_decr
+        # if right child is greater than 1
+        if node.right and node.right.val + 1 == node.val:
+            # add 1 to right incr
+            right_incr += right_consec_incr 
+        # if left child is less than 1
+        if node.right and node.right.val - 1 == node.val:
+            # add 1 to left child
+            right_decr += right_consec_decr
+        # combine left and right childs
+        # left min + right max and right min and left max
+        # store global variable
+        max_child = max(left_incr, left_decr, right_incr, right_decr)
+        max_through_root = max(left_incr + right_decr - 1, right_incr + left_decr - 1) # 2.
+        self.max_path = max(self.max_path, max_child, max_through_root)
+        return [max(left_incr, right_incr), max(left_decr, right_decr)]
+'''
+1.  We set it to 1 because even if a node is not part of increasing or decreasing, we stil return 1
+2. We subtract 1 to prevent double counting
+3. For a tree with one node, the max path is 1
+'''
+
 class Solution:
     def __init__(self):
         self.max_path = 0
