@@ -1,24 +1,26 @@
 # Readable solution
 class Solution:
     def numDecodings(self, s: str) -> int:
-        cache = [0 for i in range(len(s))]
-        if s[0] == '0': return 0
+        cache = [0 for _ in range(len(s))]
+        if s[0] == '0':
+            return 0
         cache[0] = 1
-        for i in range(1, len(s)):
-            single_digit = int(s[i])
-            two_digit = int(s[i - 1: i + 1])
-            if single_digit == 0:
-                if two_digit > 20 or two_digit < 10:
-                    return 0
+        for i in range(1, len(cache)):
+            char = s[i] 
+            if char == '0':
+                if s[i - 1] == '1' or s[i - 1] == '2':
+                    cache[i] = cache[i - 2] if i - 2 >= 0 else 1 # 1.
                 else:
-                    cache[i] = cache[i - 2] if i - 2 >= 0 else 1
+                    return 0
             else:
                 cache[i] = cache[i - 1]
-                if two_digit > 26 or two_digit < 10:
-                    continue
-                else:
+                num = (int(s[i - 1]) * 10) + int(char)
+                if 10 < num < 27:
                     cache[i] += cache[i - 2] if i - 2 >= 0 else 1
         return cache[-1]
+'''
+1. If you have 210, then the pairs are 2 and 10. And, not 2, 21, and 10. We add the `- 1` to prevent double counting.
+'''
     
 class Solution:
     def numDecodings(self, s: str) -> int:
