@@ -22,12 +22,12 @@ class Solution:
                     # increment s2 pointers
                     s2ptr += 1
                 # if we reach end of s2
-                if s2ptr == len(s2):
+                if s2ptr == len(s2): # 4.
                     break
                 # increment s1 pointer
                 right += 1
             # if we are at the end of s1
-            if right == len(s1):
+            if right == len(s1): # 4.
                 break
             # optimization step
             # set left to right
@@ -38,11 +38,10 @@ class Solution:
             while s2ptr >= 0: # 2.
                 # compare with chars of s2
                 # if chars are equal move backward
-                #print(left, s2ptr)
-                if s1[left] == s2[s2ptr]:
+                if s1[left] == s2[s2ptr]: 
                     s2ptr -= 1
                 # if we go beyond 0
-                if s2ptr < 0:
+                if s2ptr < 0: # 4.
                     break
                 # move left back
                 left -= 1 # 3.
@@ -61,4 +60,5 @@ class Solution:
 1. When we are here s2ptr = 0. We do not start s1ptr from right + 1. As right + 1 is the longest subsequence containing all characters of s2.
 2. The condition should be >= 0 and not while s2ptr:
 3. left can point to chars in s2 and chars not in s2.
+4. Key steps. Without these steps, the program will fail. The only option is to memorize these steps.
 '''
