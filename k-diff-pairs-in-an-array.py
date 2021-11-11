@@ -1,3 +1,28 @@
+# Two pointer
+class Solution:
+    def findPairs(self, nums: List[int], k: int) -> int:
+        count = 0
+        left = 0
+        right = 0
+        n = len(nums)
+        nums.sort()
+        while left < n and right < n:
+            if abs(nums[right] - nums[left]) < k or left >= right: # 1.
+                right += 1
+            elif abs(nums[right] - nums[left]) == k:
+                count += 1
+                left += 1
+                right += 1
+                while left < n and nums[left - 1] == nums[left]:
+                    left += 1
+            else:
+                left += 1
+        return count
+
+'''
+1. Needed to pass the last test case, [1,1,1,2,2] k = 0
+'''
+
 # Concise solution
 class Solution:
     def findPairs(self, nums: [int], k: int) -> int:
