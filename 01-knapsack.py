@@ -34,6 +34,25 @@ class Solution:
         cache[(i, capacity)] = max(include, exclude)
         return max(include, exclude)
 
+# Alternte top-down
+class Solution:
+   def solve(self, weights, values, capacity):
+       cache = defaultdict(int)
+       return self.get_max_value(weights, values, capacity, 0, 0, cache)
+  
+   def get_max_value(self, weights, values, max_capacity, i, curr_capacity, cache):
+       if (i, curr_capacity) in cache:
+           return cache[(i, curr_capacity)]
+       if i == len(weights) or curr_capacity > max_capacity:
+           return 0
+       include = 0
+       if curr_capacity + weights[i] <= max_capacity:
+           include = self.get_max_value(weights, values, max_capacity, i + 1, curr_capacity + weights[i], cache) + values[i]
+       exclude = self.get_max_value(weights, values, max_capacity, i + 1, curr_capacity, cache)
+       cache[(i, curr_capacity)] = max(include, exclude)
+       return max(include, exclude)
+
+    
 # bottom-up
 class Solution:
     def solve(self, weights, values, capacity):
