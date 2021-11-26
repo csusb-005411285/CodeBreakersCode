@@ -1,3 +1,28 @@
+# Tuple based solution
+class Solution:
+    def getOrder(self, tasks: List[List[int]]) -> List[int]:
+        task_map = defaultdict(list)
+        order = []
+        timer = 0
+        heap = []
+        tasks_tuple = []
+        for i, task in enumerate(tasks):
+            start_task_at, processing_time = task
+            tasks_tuple.append((start_task_at, processing_time, i))
+        tasks_tuple_sorted = sorted(tasks_tuple, key = lambda x: x[0])
+        tasks_deque = deque(tasks_tuple_sorted)
+        while len(order) != len(tasks):
+            while tasks_deque and timer >= tasks_deque[0][0]:
+                tasks_starting_at_time, processing_time, task_id = tasks_deque.popleft()
+                heappush(heap, (processing_time, task_id))
+            if heap:
+                processing_time, task_id = heappop(heap)
+                order.append(task_id)
+                timer += processing_time
+            else:
+                timer = tasks_deque[0][0]
+        return order
+
 # Alternate solution
 class Solution:
     def getOrder(self, tasks: List[List[int]]) -> List[int]:
